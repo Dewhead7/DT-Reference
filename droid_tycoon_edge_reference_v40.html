@@ -1,0 +1,3407 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Droid Tycoon Reference v2.9</title>
+<style>
+  :root {
+    --panel-width: 460px;
+    --bg: #0f1115;
+    --surface: #161a22;
+    --surface2: #1d2230;
+    --text: #e8ecf3;
+    --muted: #a6afbf;
+    --border: #2a3242;
+    --gold: #d6a100;
+    --gold-bg: #f1d77a;
+    --silver: #9ca3af;
+    --silver-bg: #d9dde5;
+    --diamond: #46b6ff;
+    --diamond-bg: #d8f2ff;
+    --rainbow: #ffffff;
+    --rainbow-bg: linear-gradient(90deg, #661515 0%, #8b4e09 28%, #856100 55%, #1f6b38 78%, #1f5d8f 100%);
+    --default: #7c8797;
+    --default-bg: #e5e7eb;
+    --galactic: #ddd6fe;
+    --galactic-bg: linear-gradient(90deg, #5b21b6 0%, #2563eb 52%, #0f766e 100%);
+    --accent: #7dd3fc;
+    --lower: #f59e0b;
+    --full: #22c55e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #0b0d12;
+    color: var(--text);
+  }
+  .shell {
+    width: min(100vw, var(--panel-width));
+    min-height: 100vh;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #10131a 0%, #0c0f15 100%);
+    border-left: 1px solid #151a24;
+    border-right: 1px solid #151a24;
+    padding: 10px 10px 14px;
+  }
+  .topbar { display: grid; gap: 8px; }
+  .title { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .title h1 { margin: 0; font-size: 15px; line-height: 1.15; letter-spacing: .2px; }
+  .meta { color: var(--muted); font-size: 10px; white-space: nowrap; }
+  .controls {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+  .field { min-width: 0; }
+  .label { font-size: 10px; color: var(--muted); margin-bottom: 3px; }
+  .control {
+    width: 100%;
+    min-width: 0;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #161b25;
+    color: var(--text);
+    padding: 7px 9px;
+    font-size: 12px;
+    font-weight: 600;
+    appearance: none;
+    outline: none;
+  }
+  .control:focus { border-color: #3f4f6b; box-shadow: 0 0 0 2px rgba(125,211,252,.12); }
+  select.control { padding-right: 26px; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 14px) 54%, calc(100% - 9px) 54%; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+  input.control::placeholder { color: #748095; }
+  .span-3 { grid-column: 1 / -1; }
+  .display-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 7px;
+    align-items: end;
+  }
+  .display-grid .field { min-width: 0; }
+  .reset-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px 6px;
+  }
+  button.control { cursor: pointer; text-align: left; }
+  .reset-btn {
+    min-height: 34px;
+    padding: 6px 9px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.1;
+    white-space: normal;
+  }
+  .reset-btn:hover { border-color: #5b6473; background: #1a2030; }
+  .reset-btn.danger {
+    color: #ffe4e6;
+    background: linear-gradient(180deg, #3a1018 0%, #22080d 100%);
+    border-color: #7f1d1d;
+  }
+  .reset-btn.danger:hover { background: linear-gradient(180deg, #4a121c 0%, #2a0a10 100%); }
+
+  .stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+  .stat { border: 1px solid var(--border); border-radius: 10px; background: rgba(255,255,255,.02); padding: 6px 7px; }
+  .stat .k { display: block; font-size: 9px; color: var(--muted); margin-bottom: 2px; }
+  .stat .v { font-size: 13px; font-weight: 700; }
+  .listbar { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 8px; }
+  .listtool { min-width: 0; }
+  .listtool .control { height: 34px; }
+  .list { display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.02);
+    padding: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+  .card.full-owned { opacity: 0.55; }
+  .card.lower-owned { border-color: rgba(245,158,11,0.5); }
+
+
+  .state-ind {
+    width: 18px; height: 18px; border-radius: 999px; border: 1px solid #334155; flex: 0 0 18px;
+    background: #242b38; padding: 0;
+  }
+  .state-none { background: #242b38; border-color: #3b4557; }
+  .state-lower { background: linear-gradient(180deg, #fbbf24, #d97706); border-color: #f59e0b; }
+  .state-full { background: linear-gradient(180deg, #4ade80, #16a34a); border-color: #22c55e; }
+  .name { min-width: 0; font-size: 14px; font-family: Arial, Helvetica, sans-serif; font-style: normal; font-weight: 700; letter-spacing: .35px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1 1 auto; }
+  .chip {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 18px; padding: 2px 6px; border-radius: 999px;
+    font-size: 10px; font-weight: 700; line-height: 1; white-space: nowrap; border: 1px solid transparent;
+  }
+  .need-text { display: inline-flex; align-items: center; justify-content: flex-start; min-height: 18px; padding: 0; border: 0; border-radius: 0; font-size: 11px; font-weight: 900; line-height: 1; white-space: nowrap; text-transform: uppercase; letter-spacing: .2px; }
+  .need-default { color: #9aa3b2; }
+  .need-gold { color: #d6a100; }
+  .need-diamond { color: #38bdf8; }
+  .need-rainbow { background: linear-gradient(90deg, #ff4040 0%, #ff9a00 22%, #ffe600 44%, #35d36f 66%, #38bdf8 83%, #8b5cf6 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; text-shadow: 0 0 1px rgba(255,255,255,.08); }
+  .need-beskar { background: linear-gradient(180deg, #f8fafc 0%, #d7dde6 45%, #aab3c1 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; text-shadow: 0 0 1px rgba(255,255,255,.08); }
+  .need-galactic { color: #8b5cf6; text-shadow: 0 0 3px rgba(139,92,246,.25); }
+  .chip.default { color: #364152; background: var(--default-bg); border-color: #cfd6e2; }
+  .chip.gold { color: #6b4a00; background: linear-gradient(180deg, #fff4c0, var(--gold-bg)); border-color: var(--gold); }
+  .chip.diamond { color: #065f8f; background: linear-gradient(180deg, #effbff, var(--diamond-bg)); border-color: var(--diamond); }
+  .chip.rainbow { color: var(--rainbow); background: var(--rainbow-bg); border-color: rgba(255,255,255,0.18); }
+  .chip.beskar { color: #394150; background: linear-gradient(180deg, #fbfcfe, var(--silver-bg)); border-color: var(--silver); }
+  .chip.galactic { color: var(--rainbow); background: var(--galactic-bg); border-color: rgba(255,255,255,0.18); }
+  .chip.rarity-common { color: #f8fafc; background: linear-gradient(180deg, #6b7280, #4b5563); border-color: #9ca3af; }
+  .chip.rarity-rare { color: #0f172a; background: linear-gradient(180deg, #67e8f9, #38bdf8); border-color: #22d3ee; }
+  .chip.rarity-epic { color: #f8fafc; background: linear-gradient(180deg, #8b5cf6, #5b21b6); border-color: #7c3aed; }
+  .chip.rarity-legendary { color: #111827; background: linear-gradient(180deg, #fdba74, #fb923c); border-color: #f97316; }
+  .chip.rarity-mythic { color: #111827; background: linear-gradient(180deg, #fda4af, #fb7185); border-color: #f43f5e; }
+
+  .compact .card { padding: 4px 6px; }
+  .compact .name { font-size: 12px; }
+  .compact .chip { min-height: 15px; padding: 1px 4px; font-size: 8px; }
+  .compact .need-text { min-height: 15px; font-size: 9px; }
+  .compact .state-ind { width: 14px; height: 14px; flex-basis: 14px; }
+  .compact .compact-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, auto) minmax(0, 1fr);
+    gap: 5px;
+    align-items: center;
+    width: 100%;
+  }
+  .compact .compact-left,
+  .compact .compact-mid,
+  .compact .compact-right {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .compact .compact-left .name { overflow: hidden; text-overflow: ellipsis; }
+  .compact .compact-mid { justify-content: flex-start; }
+  .compact .compact-right {
+    justify-content: flex-end;
+    color: var(--muted);
+    font-size: 10px;
+    flex: 0 0 auto;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .compact .compact-right::-webkit-scrollbar { display: none; }
+  .footer { margin-top: 10px; color: var(--muted); font-size: 10px; line-height: 1.4; }
+  .empty { border: 1px dashed var(--border); border-radius: 12px; padding: 18px 10px; text-align: center; color: var(--muted); font-size: 12px; margin-top: 10px; }
+  .sellable-wrap { margin-top: 8px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 2px 0 6px;
+  }
+  .section-note { color: var(--muted); font-size: 10px; }
+  .sellable-list { display: flex; flex-direction: column; gap: 7px; }
+  .sell-card {
+    border-color: rgba(245, 158, 11, 0.38);
+    background: rgba(255,255,255,0.02);
+  }
+  .sell-card.full-owned { opacity: 0.72; }
+  .sell-card.lower-owned { border-color: rgba(245, 158, 11, 0.58); }
+  .sell-btn {
+    border: 1px solid #7f1d1d;
+    background: linear-gradient(180deg, #7f1d1d 0%, #4c1010 100%);
+    color: #ffe4e6;
+    border-radius: 999px;
+    min-height: 22px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: 800;
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  .sell-btn:hover { background: linear-gradient(180deg, #991b1b 0%, #5f1212 100%); }
+  .sell-right { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+  .reset-bottom { margin-top: 8px; }
+
+  .req-pills {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    justify-content: end;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+    flex: 0 0 auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .req-pills::-webkit-scrollbar { display: none; }
+  .req-pill {
+    --pill-bg: #f8fafc;
+    --pill-fg: #0f172a;
+    border: 1px solid rgba(148,163,184,0.22);
+    background: var(--pill-bg);
+    color: var(--pill-fg);
+    border-radius: 999px;
+    min-height: 15px;
+    min-width: 16px;
+    padding: 0 4px;
+    font-size: 8px;
+    line-height: 1;
+    font-weight: 800;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: opacity .12s ease, transform .12s ease, filter .12s ease, box-shadow .12s ease;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset;
+  }
+  .req-pill:hover { transform: translateY(-1px); filter: brightness(1.04); }
+  .req-pill.active {
+    box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.24), 0 1px 0 rgba(255,255,255,0.08) inset;
+  }
+  .req-pill.selected {
+    position: relative;
+    z-index: 2;
+    outline: 3px solid #000;
+    outline-offset: -2px;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.92),
+      0 0 0 3px rgba(0,0,0,0.98),
+      0 2px 6px rgba(0,0,0,0.34);
+    transform: translateY(-1px) scale(1.08);
+    filter: saturate(1.08) brightness(1.02);
+    font-weight: 900;
+  }
+  .req-pill.covered {
+    opacity: 0.44;
+    filter: saturate(0.74);
+  }
+  .req-pill.blank {
+    opacity: 0.24;
+    color: transparent;
+    text-shadow: none;
+  }
+  .req-pill.default { --pill-bg: linear-gradient(180deg, #ffffff, #edf2f7); border-color: #d6dde7; }
+  .req-pill.gold { --pill-bg: linear-gradient(180deg, #f3d96f, #c89b00); border-color: #d6a100; }
+  .req-pill.diamond { --pill-bg: linear-gradient(180deg, #5ac7ff, #1d9fe0); border-color: #46b6ff; }
+  .req-pill.rainbow { --pill-bg: linear-gradient(90deg, #ff4d4d 0%, #ff8f1f 15%, #ffd84d 30%, #4fe28a 48%, #38bdf8 66%, #6366f1 83%, #b56bff 100%); border-color: rgba(255,255,255,0.22); }
+  .req-pill.beskar { --pill-bg: linear-gradient(180deg, #fbfcfe 0%, #d8dde5 48%, #b1bac7 100%); border-color: #9ca3af; }
+  .req-pill.galactic { --pill-bg: linear-gradient(180deg, #a78bfa 0%, #8b5cf6 52%, #6d28d9 100%); border-color: #8b5cf6; }
+</style>
+</head>
+<body>
+<div class="shell" id="shell">
+<div class="topbar">
+<div class="title">
+<h1>Droid Tycoon Reference</h1>
+<div class="meta">Current tables through Rebirth 30</div>
+</div>
+<div class="controls">
+<div class="field">
+<div class="label">Cycle</div>
+<select aria-label="Super Rebirth cycle" class="control" id="cycleSel">
+<option value="1">Cycle 1</option>
+<option value="2">Cycle 2</option>
+<option value="3">Cycle 3</option>
+<option value="4">Cycle 4</option>
+</select>
+</div>
+<div class="field">
+<div class="label">Current RB</div>
+<select aria-label="Current rebirth" class="control" id="currentSel"></select>
+</div>
+<div class="field">
+<div class="label">Target RB</div>
+<select aria-label="Target rebirth" class="control" id="targetSel"></select>
+</div>
+<div class="field span-3">
+<div class="label">Display</div>
+<div class="display-grid">
+<div class="field">
+<div class="label">View</div>
+<select aria-label="View" class="control" id="modeSel">
+<option value="all">All</option>
+<option value="planning">Planning</option>
+<option value="needed">Needed</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<div class="stats">
+<div class="stat"><span class="k">All</span><span class="v" id="statAll">0</span></div>
+<div class="stat"><span class="k">Unowned</span><span class="v" id="statUnowned">0</span></div>
+<div class="stat"><span class="k">Owned</span><span class="v" id="statOwned">0</span></div>
+<div class="stat"><span class="k">Incomplete</span><span class="v" id="statIncomplete">0</span></div>
+<div class="stat"><span class="k">Complete</span><span class="v" id="statComplete">0</span></div>
+</div>
+</div>
+<div class="listbar">
+<div class="listtool">
+<div class="label">Search</div>
+<input aria-label="Search droid" class="control" id="searchBox" placeholder="Search droid"/>
+</div>
+<div class="listtool">
+<div class="label">Sort</div>
+<select aria-label="Sort mode" class="control" id="sortSel">
+<option value="first">First Rebirth</option>
+<option value="last">Last Rebirth</option>
+<option value="variance">Variance</option>
+<option value="alpha">Alphabetical</option>
+</select>
+</div>
+</div>
+<div class="list" id="list"></div>
+<div class="empty" id="empty" style="display:none;">No rows match the current filters.</div>
+<div class="sellable-wrap">
+<div class="section-head">
+<div class="label">Sellable</div>
+<div class="section-note">Owned droids whose window is behind Current RB.</div>
+</div>
+<div class="sellable-list" id="sellableList"></div>
+<div class="empty" id="sellableEmpty" style="display:none; margin-top:0;">No owned droids are currently safe to sell.</div>
+</div>
+<div class="reset-bottom">
+<div class="reset-grid">
+<button class="control reset-btn" id="resetCycleBtn" type="button">Reset current cycle</button>
+<button class="control reset-btn danger" id="resetAllBtn" type="button">Reset all progress</button>
+</div>
+</div>
+<div class="footer">Selected variance is now the saved ownership state. The dot still reflects whether that owned variance completes the row for the current target RB. Use View to switch between All, Planning, and Needed. The Sellable section shows owned droids whose requirement window is already behind Current RB. Display-name variants were normalized across the database, while the progression rows themselves were left intact. Variance order is Default → Gold → Diamond → Rainbow → Beskar → Galactic.</div>
+</div>
+<!-- DATABASE SECTION: edit only this block when requirements change -->
+<script id="droid-db" type="application/json">{
+  "varianceOrder": [
+    "Default",
+    "Gold",
+    "Diamond",
+    "Rainbow",
+    "Beskar",
+    "Galactic"
+  ],
+  "cycles": {
+    "1": [
+      {
+        "key": "cb",
+        "name": "CB",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "drk1probe",
+        "name": "DRK-1 Probe",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "pit",
+        "name": "Pit",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "2bb",
+        "name": "2BB",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "balcore",
+        "name": "BAL-Core",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "bdxexplorer",
+        "name": "BDX Explorer",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "alt",
+        "name": "A-LT",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "D"
+          ],
+          [
+            6,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "bu4d",
+        "name": "B-U4D",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "D"
+          ],
+          [
+            5,
+            "G"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "r9",
+        "name": "R9",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "G"
+          ],
+          [
+            5,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "arg",
+        "name": "ARG",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            6,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "b1security",
+        "name": "B1 Security",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "groundmech",
+        "name": "Groundmech",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            4,
+            "D"
+          ],
+          [
+            6,
+            "G"
+          ],
+          [
+            9,
+            "R"
+          ],
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "hovr",
+        "name": "HOV-R",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            5,
+            "G"
+          ],
+          [
+            8,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "bb",
+        "name": "BB",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            7,
+            "G"
+          ],
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "lo",
+        "name": "LO",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            8,
+            "G"
+          ],
+          [
+            10,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "utiltec",
+        "name": "Util-TEC",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            8,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "r6",
+        "name": "R6",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            9,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "trakr",
+        "name": "TRAK-R",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            9,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "haulr",
+        "name": "HAUL-R",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            10,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "strikeorb",
+        "name": "Strike-ORB",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            10,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "ampwalker",
+        "name": "AMP Walker",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            11,
+            "R"
+          ],
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "b1heavy",
+        "name": "B1 Heavy",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            11,
+            "R"
+          ],
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "bb9",
+        "name": "BB9",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            11,
+            "D"
+          ],
+          [
+            15,
+            "G"
+          ],
+          [
+            18,
+            "DI"
+          ],
+          [
+            24,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "mechadroid",
+        "name": "Mecha-Droid",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            12,
+            "D"
+          ],
+          [
+            14,
+            "G"
+          ],
+          [
+            17,
+            "DI"
+          ],
+          [
+            20,
+            "R"
+          ],
+          [
+            29,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "monowlkr",
+        "name": "Mono-WLKR",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            12,
+            "D"
+          ],
+          [
+            14,
+            "G"
+          ],
+          [
+            16,
+            "DI"
+          ],
+          [
+            18,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ],
+          [
+            29,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "protoroller",
+        "name": "Proto-Roller",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            12,
+            "G"
+          ],
+          [
+            16,
+            "DI"
+          ],
+          [
+            19,
+            "R"
+          ],
+          [
+            22,
+            "B"
+          ],
+          [
+            28,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "b2rp",
+        "name": "B2-RP",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            13,
+            "D"
+          ],
+          [
+            15,
+            "G"
+          ],
+          [
+            17,
+            "DI"
+          ],
+          [
+            19,
+            "R"
+          ],
+          [
+            25,
+            "B"
+          ],
+          [
+            30,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "cyclograv",
+        "name": "Cyclo-GRAV",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            13,
+            "D"
+          ],
+          [
+            17,
+            "DI"
+          ],
+          [
+            19,
+            "R"
+          ],
+          [
+            24,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "r7",
+        "name": "R7",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            13,
+            "D"
+          ],
+          [
+            15,
+            "G"
+          ],
+          [
+            18,
+            "DI"
+          ],
+          [
+            20,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "optistrk",
+        "name": "Opti-STRK",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            14,
+            "D"
+          ],
+          [
+            16,
+            "G"
+          ],
+          [
+            20,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "orbwalker",
+        "name": "ORB-Walker",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "motrak",
+        "name": "MO-Trak",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            24,
+            "D"
+          ],
+          [
+            28,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "drftr",
+        "name": "DRFT-R",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            25,
+            "G"
+          ],
+          [
+            28,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "ig",
+        "name": "IG",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            25,
+            "D"
+          ],
+          [
+            29,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "cyclens",
+        "name": "Cyclens",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "G"
+          ],
+          [
+            30,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "loadlifter",
+        "name": "Loadlifter",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "DI"
+          ],
+          [
+            30,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "ric1200",
+        "name": "RIC-1200",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "kx",
+        "name": "KX",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "snowmouse",
+        "name": "Snow Mouse",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "tritek",
+        "name": "Tri-TEK",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "R"
+          ]
+        ]
+      }
+    ],
+    "2": [
+      {
+        "key": "gonk",
+        "name": "Gonk",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "id10",
+        "name": "ID10",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "mouse",
+        "name": "Mouse",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "navex",
+        "name": "NAV-EX",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ],
+          [
+            5,
+            "G"
+          ],
+          [
+            9,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "rollr",
+        "name": "Roll-R",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "senatehovercam",
+        "name": "Senate Hovercam",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "bdxexplorer",
+        "name": "BDX Explorer",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "G"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "r4",
+        "name": "R4",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "D"
+          ],
+          [
+            5,
+            "G"
+          ],
+          [
+            8,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "vectarm",
+        "name": "Vect-ARM",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "D"
+          ],
+          [
+            5,
+            "G"
+          ],
+          [
+            10,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "2bb",
+        "name": "2BB",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            6,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "balcore",
+        "name": "BAL-Core",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            6,
+            "DI"
+          ],
+          [
+            11,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "orbwalker",
+        "name": "ORB-Walker",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            4,
+            "D"
+          ],
+          [
+            12,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "gunrunner",
+        "name": "Gunrunner",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            6,
+            "D"
+          ],
+          [
+            8,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "r2",
+        "name": "R2",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            7,
+            "G"
+          ],
+          [
+            10,
+            "DI"
+          ],
+          [
+            12,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "b2super",
+        "name": "B2 Super",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            8,
+            "G"
+          ],
+          [
+            10,
+            "DI"
+          ],
+          [
+            13,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "ampwalker",
+        "name": "AMP Walker",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            9,
+            "G"
+          ],
+          [
+            16,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "strikeorb",
+        "name": "Strike-ORB",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            9,
+            "G"
+          ],
+          [
+            11,
+            "DI"
+          ],
+          [
+            15,
+            "R"
+          ],
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "b2heavy",
+        "name": "B2 Heavy",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            11,
+            "DI"
+          ],
+          [
+            14,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "bb9",
+        "name": "BB9",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            12,
+            "D"
+          ],
+          [
+            15,
+            "G"
+          ],
+          [
+            18,
+            "DI"
+          ],
+          [
+            23,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "mechadroid",
+        "name": "Mecha-Droid",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            13,
+            "D"
+          ],
+          [
+            16,
+            "G"
+          ],
+          [
+            19,
+            "DI"
+          ],
+          [
+            28,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "protoroller",
+        "name": "Proto-Roller",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            13,
+            "D"
+          ],
+          [
+            15,
+            "G"
+          ],
+          [
+            18,
+            "DI"
+          ],
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "b2rp",
+        "name": "B2-RP",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            14,
+            "D"
+          ],
+          [
+            16,
+            "DI"
+          ],
+          [
+            19,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ],
+          [
+            24,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "r7",
+        "name": "R7",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            14,
+            "G"
+          ],
+          [
+            17,
+            "DI"
+          ],
+          [
+            19,
+            "R"
+          ],
+          [
+            29,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "monowlkr",
+        "name": "Mono-WLKR",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            17,
+            "G"
+          ],
+          [
+            20,
+            "R"
+          ],
+          [
+            25,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "optipod",
+        "name": "Opti-POD",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            17,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "utiltec",
+        "name": "Util-TEC",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            18,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "cyclograv",
+        "name": "Cyclo-GRAV",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            20,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ],
+          [
+            29,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "optistrk",
+        "name": "Opti-STRK",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            20,
+            "R"
+          ],
+          [
+            24,
+            "B"
+          ],
+          [
+            30,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "haulr",
+        "name": "HAUL-R",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "lo",
+        "name": "LO",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "r6",
+        "name": "R6",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "sentri",
+        "name": "Sen-TRI",
+        "rarity": "Common",
+        "requirements": [
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "snowmouse",
+        "name": "Snow Mouse",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            24,
+            "D"
+          ],
+          [
+            28,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "ric1200",
+        "name": "RIC-1200",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            25,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "tritek",
+        "name": "Tri-TEK",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            25,
+            "G"
+          ],
+          [
+            28,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "drftr",
+        "name": "DRFT-R",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "DI"
+          ],
+          [
+            30,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "ig",
+        "name": "IG",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "kx",
+        "name": "KX",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "G"
+          ],
+          [
+            30,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "lep",
+        "name": "LEP",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "loadlifter",
+        "name": "Loadlifter",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "motrak",
+        "name": "MO-Trak",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "ric",
+        "name": "RIC",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            29,
+            "B"
+          ]
+        ]
+      }
+    ],
+    "3": [
+      {
+        "key": "gonk",
+        "name": "Gonk",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "mouse",
+        "name": "Mouse",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "pit",
+        "name": "Pit",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "2bb",
+        "name": "2BB",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ],
+          [
+            5,
+            "G"
+          ],
+          [
+            8,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "r3",
+        "name": "R3",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ],
+          [
+            5,
+            "G"
+          ],
+          [
+            8,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "senatehovercam",
+        "name": "Senate Hovercam",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ],
+          [
+            5,
+            "G"
+          ],
+          [
+            10,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "r4",
+        "name": "R4",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "D"
+          ],
+          [
+            6,
+            "DI"
+          ],
+          [
+            9,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "r5",
+        "name": "R5",
+        "rarity": "Common",
+        "requirements": [
+          [
+            3,
+            "D"
+          ],
+          [
+            6,
+            "DI"
+          ],
+          [
+            9,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "r8",
+        "name": "R8",
+        "rarity": "Common",
+        "requirements": [
+          [
+            3,
+            "D"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "b1battle",
+        "name": "B1 Battle",
+        "rarity": "Common",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "b1security",
+        "name": "B1 Security",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            8,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "r9",
+        "name": "R9",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "bdxexplorer",
+        "name": "BDX Explorer",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            6,
+            "DI"
+          ],
+          [
+            9,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "groundmech",
+        "name": "Groundmech",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            10,
+            "D"
+          ],
+          [
+            12,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "trakr",
+        "name": "TRAK-R",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            10,
+            "D"
+          ],
+          [
+            12,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "b2heavy",
+        "name": "B2 Heavy",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            11,
+            "D"
+          ],
+          [
+            14,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "b2super",
+        "name": "B2 Super",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            11,
+            "D"
+          ],
+          [
+            13,
+            "R"
+          ],
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "utiltec",
+        "name": "Util-TEC",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            11,
+            "D"
+          ],
+          [
+            18,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "balcore",
+        "name": "BAL-Core",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            12,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "mechadroid",
+        "name": "Mecha-Droid",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            13,
+            "D"
+          ],
+          [
+            16,
+            "G"
+          ],
+          [
+            19,
+            "DI"
+          ],
+          [
+            23,
+            "B"
+          ],
+          [
+            29,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "protoroller",
+        "name": "Proto-Roller",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            13,
+            "D"
+          ],
+          [
+            15,
+            "G"
+          ],
+          [
+            18,
+            "DI"
+          ],
+          [
+            25,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "b2rp",
+        "name": "B2-RP",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            14,
+            "D"
+          ],
+          [
+            16,
+            "DI"
+          ],
+          [
+            19,
+            "R"
+          ],
+          [
+            22,
+            "B"
+          ],
+          [
+            24,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "r7",
+        "name": "R7",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            14,
+            "G"
+          ],
+          [
+            17,
+            "DI"
+          ],
+          [
+            19,
+            "R"
+          ],
+          [
+            30,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "bb9",
+        "name": "BB9",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            15,
+            "G"
+          ],
+          [
+            18,
+            "DI"
+          ],
+          [
+            24,
+            "B"
+          ],
+          [
+            28,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "strikeorb",
+        "name": "Strike-ORB",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            15,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "ampwalker",
+        "name": "AMP Walker",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            16,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "monowlkr",
+        "name": "Mono-WLKR",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            17,
+            "G"
+          ],
+          [
+            20,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "optipod",
+        "name": "Opti-POD",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            17,
+            "R"
+          ],
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "cyclograv",
+        "name": "Cyclo-GRAV",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            20,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "optistrk",
+        "name": "Opti-STRK",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            20,
+            "R"
+          ],
+          [
+            29,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "r2",
+        "name": "R2",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "gunrunner",
+        "name": "Gunrunner",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "lngshot",
+        "name": "LNG-Shot",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "ric",
+        "name": "RIC",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            24,
+            "D"
+          ],
+          [
+            28,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "loadlifter",
+        "name": "Loadlifter",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            25,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "motrak",
+        "name": "MO-Trak",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            25,
+            "G"
+          ],
+          [
+            28,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "lep",
+        "name": "LEP",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "G"
+          ],
+          [
+            30,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "snowmouse",
+        "name": "Snow Mouse",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "tritek",
+        "name": "Tri-TEK",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "drftr",
+        "name": "DRFT-R",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "B"
+          ],
+          [
+            30,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "ig",
+        "name": "IG",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "R"
+          ],
+          [
+            29,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "ric1200",
+        "name": "RIC-1200",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "DI"
+          ]
+        ]
+      }
+    ],
+    "4": [
+      {
+        "key": "drk1probe",
+        "name": "DRK-1 Probe",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "id10",
+        "name": "ID10",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "pit",
+        "name": "Pit",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "2bb",
+        "name": "2BB",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ],
+          [
+            5,
+            "G"
+          ],
+          [
+            8,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "r3",
+        "name": "R3",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ],
+          [
+            5,
+            "G"
+          ],
+          [
+            8,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "senatehovercam",
+        "name": "Senate Hovercam",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ],
+          [
+            5,
+            "G"
+          ],
+          [
+            10,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "r4",
+        "name": "R4",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "D"
+          ],
+          [
+            6,
+            "DI"
+          ],
+          [
+            9,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "r5",
+        "name": "R5",
+        "rarity": "Common",
+        "requirements": [
+          [
+            3,
+            "G"
+          ],
+          [
+            6,
+            "DI"
+          ],
+          [
+            9,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "r8",
+        "name": "R8",
+        "rarity": "Common",
+        "requirements": [
+          [
+            3,
+            "G"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "b1battle",
+        "name": "B1 Battle",
+        "rarity": "Common",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "b1security",
+        "name": "B1 Security",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            8,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "r9",
+        "name": "R9",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "bdxexplorer",
+        "name": "BDX Explorer",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            6,
+            "DI"
+          ],
+          [
+            9,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "groundmech",
+        "name": "Groundmech",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            10,
+            "D"
+          ],
+          [
+            12,
+            "G"
+          ],
+          [
+            14,
+            "DI"
+          ],
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "trakr",
+        "name": "TRAK-R",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            10,
+            "D"
+          ],
+          [
+            12,
+            "G"
+          ],
+          [
+            14,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "b2heavy",
+        "name": "B2 Heavy",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            11,
+            "D"
+          ],
+          [
+            15,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "b2super",
+        "name": "B2 Super",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            11,
+            "D"
+          ],
+          [
+            13,
+            "R"
+          ],
+          [
+            15,
+            "R"
+          ],
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "utiltec",
+        "name": "Util-TEC",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            11,
+            "D"
+          ],
+          [
+            16,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "balcore",
+        "name": "BAL-Core",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            12,
+            "R"
+          ],
+          [
+            14,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "mechadroid",
+        "name": "Mecha-Droid",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            13,
+            "D"
+          ],
+          [
+            17,
+            "G"
+          ],
+          [
+            19,
+            "DI"
+          ],
+          [
+            24,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "protoroller",
+        "name": "Proto-Roller",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            13,
+            "D"
+          ],
+          [
+            24,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "b2rp",
+        "name": "B2-RP",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            15,
+            "D"
+          ],
+          [
+            18,
+            "G"
+          ],
+          [
+            19,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "bb9",
+        "name": "BB9",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            16,
+            "D"
+          ],
+          [
+            18,
+            "G"
+          ],
+          [
+            29,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "r7",
+        "name": "R7",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            16,
+            "G"
+          ],
+          [
+            18,
+            "DI"
+          ],
+          [
+            19,
+            "R"
+          ],
+          [
+            29,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "cyclograv",
+        "name": "Cyclo-GRAV",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            17,
+            "G"
+          ],
+          [
+            20,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "optistrk",
+        "name": "Opti-STRK",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            17,
+            "D"
+          ],
+          [
+            20,
+            "R"
+          ],
+          [
+            25,
+            "B"
+          ],
+          [
+            28,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "monowlkr",
+        "name": "Mono-WLKR",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            20,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ],
+          [
+            30,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "ampwalker",
+        "name": "AMP Walker",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "haulr",
+        "name": "HAUL-R",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "gunrunner",
+        "name": "Gunrunner",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "strikeorb",
+        "name": "Strike-ORB",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "motrak",
+        "name": "MO-Trak",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            24,
+            "D"
+          ],
+          [
+            26,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "drftr",
+        "name": "DRFT-R",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            25,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "tritek",
+        "name": "Tri-TEK",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            25,
+            "D"
+          ],
+          [
+            29,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "cyclens",
+        "name": "Cyclens",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "G"
+          ],
+          [
+            30,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "lep",
+        "name": "LEP",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "loadlifter",
+        "name": "Loadlifter",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "ric1200",
+        "name": "RIC-1200",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "snowmouse",
+        "name": "Snow Mouse",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "ig",
+        "name": "IG",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            28,
+            "R"
+          ],
+          [
+            30,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "kx",
+        "name": "KX",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            28,
+            "B"
+          ]
+        ]
+      }
+    ]
+  }
+}</script>
+<script>
+const DB = JSON.parse(document.getElementById('droid-db').textContent);
+const VARIANT_ORDER = DB.varianceOrder || ['Default','Gold','Diamond','Rainbow','Beskar','Galactic'];
+const VARIANT_RANK = Object.fromEntries(VARIANT_ORDER.map((v, i) => [v, i]));
+const VARIANT_CODE = {Default:'D', Gold:'G', Diamond:'DI', Rainbow:'R', Beskar:'B', Galactic:'GA'};
+const CODE_TO_VARIANT = Object.fromEntries(Object.entries(VARIANT_CODE).map(([k, v]) => [v, k]));
+
+function validateDB() {
+  const allowed = new Set(DB.varianceOrder);
+  const problems = [];
+  for (const [cycle, rows] of Object.entries(DB.cycles || {})) {
+    for (const row of rows) {
+      if (!row || typeof row.name !== 'string' || !Array.isArray(row.requirements) || !row.requirements.length) {
+        problems.push(`Cycle ${cycle}: malformed row`);
+        continue;
+      }
+      let prev = -1;
+      for (const req of row.requirements) {
+        const [rb, code] = req;
+        if (!Number.isInteger(rb) || rb <= prev) problems.push(`Cycle ${cycle} ${row.name}: bad RB order`);
+        prev = rb;
+        const variance = CODE_TO_VARIANT[code];
+        if (!allowed.has(variance)) problems.push(`Cycle ${cycle} ${row.name}: unknown variance ${code}`);
+      }
+    }
+  }
+  if (problems.length) console.warn('Droid Tycoon DB validation issues:', problems.slice(0, 20));
+  if (!problems.length) console.info('Droid Tycoon DB validation passed after display-name normalization.');
+  return problems;
+}
+const __dbIssues = validateDB();
+const RARITY_CLASS = {Common:'rarity-common', Rare:'rarity-rare', Epic:'rarity-epic', Legendary:'rarity-legendary', Mythic:'rarity-mythic'};
+const STORAGE = 'droid_tycoon_edge_reference_state_v9';
+
+const els = {
+  shell: document.getElementById('shell'),
+  cycleSel: document.getElementById('cycleSel'),
+  currentSel: document.getElementById('currentSel'),
+  targetSel: document.getElementById('targetSel'),
+  sortSel: document.getElementById('sortSel'),
+  searchBox: document.getElementById('searchBox'),
+  modeSel: document.getElementById('modeSel'),
+  resetCycleBtn: document.getElementById('resetCycleBtn'),
+  resetAllBtn: document.getElementById('resetAllBtn'),
+  list: document.getElementById('list'),
+  empty: document.getElementById('empty'),
+  statAll: document.getElementById('statAll'),
+  statUnowned: document.getElementById('statUnowned'),
+  statIncomplete: document.getElementById('statIncomplete'),
+  statComplete: document.getElementById('statComplete'),
+  statOwned: document.getElementById('statOwned'),
+  sellableList: document.getElementById('sellableList'),
+  sellableEmpty: document.getElementById('sellableEmpty'),
+};
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE) || '{}'); } catch (e) { return {}; }
+}
+function saveState() { localStorage.setItem(STORAGE, JSON.stringify(state)); }
+let state = loadState();
+
+if (state.uiHideOwned !== undefined) delete state.uiHideOwned;
+if (state.uiHideLower !== undefined) delete state.uiHideLower;
+if (state.uiCompact !== undefined) delete state.uiCompact;
+if (!['all', 'planning', 'needed'].includes(state.uiMode)) state.uiMode = 'needed';
+
+// Migrate renamed display-name state keys from earlier versions.
+if (state['c1:cycolens'] !== undefined && state['c1:cyclens'] === undefined) {
+  state['c1:cyclens'] = state['c1:cycolens'];
+}
+if ('c1:cycolens' in state) delete state['c1:cycolens'];
+
+if (state['c1:drift-r'] !== undefined && state['c1:drft-r'] === undefined) {
+  state['c1:drft-r'] = state['c1:drift-r'];
+}
+if ('c1:drift-r' in state) delete state['c1:drift-r'];
+
+function stateKey(cycle, name) { return `c${cycle}:${name.toLowerCase()}`; }
+function pillKey(cycle, name) { return `c${cycle}:${name.toLowerCase()}:pill`; }
+function selectionKey(cycle, name) { return `c${cycle}:${name.toLowerCase()}:selected`; }
+function findRow(cycle, key) { return (DB.cycles[String(cycle)] || []).find((row) => row.key === key) || null; }
+function getLegacyThreshold(cycle, name) { return Number(state[pillKey(cycle, name)] || 0); }
+function legacySelectedVariantFromThreshold(row, threshold) {
+  if (!row || !threshold) return '';
+  const exact = row.requirements.find(([rb]) => rb === threshold);
+  if (exact) return CODE_TO_VARIANT[exact[1]] || '';
+  const fallback = [...row.requirements].reverse().find(([rb]) => rb <= threshold);
+  return fallback ? (CODE_TO_VARIANT[fallback[1]] || '') : '';
+}
+function getOwnedVariant(cycle, key) {
+  const explicit = state[selectionKey(cycle, key)] || '';
+  if (explicit) return explicit;
+  const row = findRow(cycle, key);
+  const threshold = getLegacyThreshold(cycle, key);
+  return legacySelectedVariantFromThreshold(row, threshold);
+}
+function setOwnedVariant(cycle, key, value) {
+  if (value) state[selectionKey(cycle, key)] = value;
+  else delete state[selectionKey(cycle, key)];
+  delete state[pillKey(cycle, key)];
+  delete state[stateKey(cycle, key)];
+  saveState();
+}
+function clearOwnedVariant(cycle, key) {
+  delete state[selectionKey(cycle, key)];
+  delete state[pillKey(cycle, key)];
+  delete state[stateKey(cycle, key)];
+  saveState();
+}
+function migrateLegacyOwnedVariants() {
+  let changed = false;
+  for (const [cycle, rows] of Object.entries(DB.cycles || {})) {
+    for (const row of rows) {
+      const sk = selectionKey(cycle, row.key);
+      const pk = pillKey(cycle, row.key);
+      if (state[sk] !== undefined) continue;
+      if (state[pk] === undefined) continue;
+      const variant = legacySelectedVariantFromThreshold(row, Number(state[pk] || 0));
+      if (variant) state[sk] = variant;
+      delete state[pk];
+      changed = true;
+    }
+  }
+  if (changed) saveState();
+}
+function clearCycleProgress(cycle) {
+  const prefix = `c${cycle}:`;
+  let changed = false;
+  for (const key of Object.keys(state)) {
+    if (key.startsWith(prefix)) { delete state[key]; changed = true; }
+  }
+  if (changed) saveState();
+}
+function clearAllProgress() {
+  let changed = false;
+  for (const key of Object.keys(state)) {
+    if (/^c\d+:/.test(key)) { delete state[key]; changed = true; }
+  }
+  if (changed) saveState();
+}
+function ownershipStateForRow(row, cycle, targetRebirth) {
+  const need = canonicalNeed(row, targetRebirth);
+  const needRank = VARIANT_RANK[need] ?? 0;
+  const ownedVariant = getOwnedVariant(cycle, row.key);
+  if (ownedVariant) {
+    const ownedRank = VARIANT_RANK[ownedVariant] ?? -1;
+    return { ownedVariant, own: ownedRank >= needRank ? 2 : 1 };
+  }
+  const legacyOwn = Number(state[stateKey(cycle, row.key)] || 0);
+  return { ownedVariant: '', own: legacyOwn === 2 ? 2 : legacyOwn === 1 ? 1 : 0 };
+}
+function buildSelect(el, max) {
+  const options = [];
+  for (let i = 1; i <= max; i++) options.push(`<option value="${i}">${i}</option>`);
+  el.innerHTML = options.join('');
+}
+buildSelect(els.currentSel, 30);
+buildSelect(els.targetSel, 30);
+migrateLegacyOwnedVariants();
+
+function canonicalNeed(row, target) {
+  let best = null;
+  for (const [rb, code] of row.requirements) {
+    if (rb > target) continue;
+    const variance = CODE_TO_VARIANT[code] || 'Default';
+    if (!best || VARIANT_RANK[variance] > VARIANT_RANK[best]) best = variance;
+  }
+  return best || 'Default';
+}
+
+function throughValue(row, target) {
+  let last = null;
+  for (const [rb] of row.requirements) if (rb <= target) last = rb;
+  return last;
+}
+
+function firstRequired(row) { return row.requirements[0]?.[0] || 1; }
+function rarityChip(cls, text) { return `<span class="chip ${cls}">${text}</span>`; }
+function needText(cls, text) { return `<span class="need-text ${cls}">${text}</span>`; }
+function reqPillClass(variant) {
+  return String(variant || 'Default').toLowerCase();
+}
+function groupedRequirements(row) {
+  const grouped = Object.fromEntries(VARIANT_ORDER.map((variant) => [variant, []]));
+  for (const [rb, code] of row.requirements) {
+    const variant = CODE_TO_VARIANT[code] || 'Default';
+    (grouped[variant] || (grouped[variant] = [])).push(rb);
+  }
+  return grouped;
+}
+function reqPill(variant, label, covered, active, blank = false, selected = false) {
+  const cls = ['req-pill', reqPillClass(variant)];
+  if (covered) cls.push('covered');
+  if (active) cls.push('active');
+  if (blank) cls.push('blank');
+  if (selected) cls.push('selected');
+  const attrs = blank
+    ? ` type="button" data-variant="${variant}" aria-pressed="${selected ? 'true' : 'false'}" aria-label="${variant} variance"`
+    : ` type="button" data-variant="${variant}" data-rb="${label}" aria-pressed="${selected ? 'true' : 'false'}" aria-label="${variant} ${label} variance"`;
+  return `<button class="${cls.join(' ')}"${attrs}>${blank ? '' : label}</button>`;
+}
+function reqPillStrip(row, cycle) {
+  const selected = getOwnedVariant(cycle, row.key);
+  const selectedRank = selected ? (VARIANT_RANK[selected] ?? -1) : -1;
+  const grouped = groupedRequirements(row);
+  const pills = VARIANT_ORDER.map((variant) => {
+    const values = grouped[variant] || [];
+    const label = values.length ? String(Math.max(...values)) : '';
+    const covered = selectedRank >= 0 && (VARIANT_RANK[variant] ?? 99) <= selectedRank;
+    const active = selected === variant;
+    return reqPill(variant, label, covered, active, !label, active);
+  }).join('');
+  return `<div class="req-pills">${pills}</div>`;
+}
+
+function cmp(a, b, mode) {
+  if (mode === 'alpha') return a.name.localeCompare(b.name);
+  if (mode === 'variance') {
+    if (a.needRank !== b.needRank) return a.needRank - b.needRank;
+    if (a.first !== b.first) return a.first - b.first;
+    return a.name.localeCompare(b.name);
+  }
+  if (mode === 'last') {
+    if (a.through !== b.through) return a.through - b.through;
+    if (a.needRank !== b.needRank) return a.needRank - b.needRank;
+    return a.name.localeCompare(b.name);
+  }
+  // first
+  if (a.first !== b.first) return a.first - b.first;
+  if (a.needRank !== b.needRank) return a.needRank - b.needRank;
+  return a.name.localeCompare(b.name);
+}
+
+function cmpSellable(a, b) {
+  if (a.through !== b.through) return a.through - b.through;
+  if (a.needRank !== b.needRank) return a.needRank - b.needRank;
+  return a.name.localeCompare(b.name);
+}
+
+function renderCard(row, cycle) {
+  const statusCls = row.own === 2 ? 'state-full' : (row.own === 1 ? 'state-lower' : 'state-none');
+  const cardCls = [
+    'card',
+    row.own === 2 ? 'full-owned' : '',
+    row.own === 1 ? 'lower-owned' : '',
+  ].filter(Boolean).join(' ');
+  const needCls = `need-${row.need.toLowerCase()}`;
+  const needLabel = needText(needCls, row.need.toUpperCase());
+  const rarity = rarityChip(RARITY_CLASS[row.rarity] || 'rarity-common', row.rarity.toUpperCase());
+  const pills = reqPillStrip(row, cycle);
+
+  return `
+      <div class="${cardCls}" data-cycle="${cycle}" data-key="${row.key}">
+        <div class="compact-row">
+          <div class="compact-left">
+            <div class="state-ind ${statusCls}" aria-hidden="true"></div>
+            <div class="name">${row.name}</div>
+          </div>
+          <div class="compact-mid">${needLabel}${rarity}</div>
+          <div class="compact-right">${pills}</div>
+        </div>
+      </div>`;
+}
+
+function renderSellableCard(row, cycle) {
+  const statusCls = row.own === 2 ? 'state-full' : 'state-lower';
+  const cardCls = [
+    'card',
+    'sell-card',
+    row.own === 2 ? 'full-owned' : '',
+    row.own === 1 ? 'lower-owned' : '',
+  ].filter(Boolean).join(' ');
+  const needCls = `need-${row.need.toLowerCase()}`;
+  const needLabel = needText(needCls, row.need.toUpperCase());
+  const rarity = rarityChip(RARITY_CLASS[row.rarity] || 'rarity-common', row.rarity.toUpperCase());
+  const stateDot = `<div class="state-ind ${statusCls}" aria-hidden="true"></div>`;
+  const pills = reqPillStrip(row, cycle);
+
+  return `
+      <div class="${cardCls}" data-cycle="${cycle}" data-key="${row.key}">
+        <div class="compact-row">
+          <div class="compact-left">
+            ${stateDot}
+            <div class="name">${row.name}</div>
+          </div>
+          <div class="compact-mid">${needLabel}${rarity}</div>
+          <div class="compact-right sell-right">
+            ${pills}
+            <button class="sell-btn" type="button" data-cycle="${cycle}" data-key="${row.key}">Sell</button>
+          </div>
+        </div>
+      </div>`;
+}
+
+function render() {
+  const cycle = els.cycleSel.value;
+  const data = DB.cycles[cycle] || [];
+  const currentRebirth = Number(els.currentSel.value);
+  const targetRebirth = Number(els.targetSel.value);
+  const q = els.searchBox.value.trim().toLowerCase();
+  const sortMode = els.sortSel.value;
+  const viewMode = els.modeSel.value;
+
+  els.shell.classList.add('compact');
+
+  const rows = [];
+  const sellableRows = [];
+  let allCount = 0;
+  let unownedCount = 0;
+  let incompleteCount = 0;
+  let completeCount = 0;
+  let ownedCount = 0;
+
+  for (const row of data) {
+    const { own } = ownershipStateForRow(row, cycle, targetRebirth);
+    const need = canonicalNeed(row, targetRebirth);
+    const needRank = VARIANT_RANK[need];
+    const through = throughValue(row, targetRebirth);
+    const first = firstRequired(row);
+    const last = through;
+    const sellable = own > 0 && through !== null && through < currentRebirth;
+    const matches = !q || row.name.toLowerCase().includes(q) || row.rarity.toLowerCase().includes(q) || need.toLowerCase().includes(q);
+    let modePass = true;
+    if (viewMode === 'planning') {
+      modePass = through !== null && through >= currentRebirth;
+    } else if (viewMode === 'needed') {
+      modePass = through !== null && through >= currentRebirth && own !== 2;
+    }
+    const show = matches && modePass;
+
+    if (show) {
+      rows.push({...row, own, need, needRank, through, first, last});
+      allCount += 1;
+      ownedCount += own > 0 ? 1 : 0;
+      unownedCount += own === 0 ? 1 : 0;
+      incompleteCount += own === 1 ? 1 : 0;
+      completeCount += own === 2 ? 1 : 0;
+    }
+    if (sellable && matches) sellableRows.push({...row, own, need, needRank, through, first, last});
+  }
+
+  rows.sort((a, b) => cmp(a, b, sortMode));
+  sellableRows.sort(cmpSellable);
+
+  els.statAll.textContent = allCount;
+  els.statUnowned.textContent = unownedCount;
+  els.statIncomplete.textContent = incompleteCount;
+  els.statComplete.textContent = completeCount;
+  els.statOwned.textContent = ownedCount;
+  els.empty.style.display = allCount ? 'none' : 'block';
+  els.list.innerHTML = rows.map(row => renderCard(row, cycle)).join('');
+  els.sellableList.innerHTML = sellableRows.length ? sellableRows.map(row => renderSellableCard(row, cycle)).join('') : '';
+  els.sellableEmpty.style.display = sellableRows.length ? 'none' : 'block';
+}
+
+document.addEventListener('click', (e) => {
+  const sellBtn = e.target.closest('.sell-btn');
+  if (sellBtn) {
+    const cycle = sellBtn.getAttribute('data-cycle');
+    const key = sellBtn.getAttribute('data-key');
+    clearOwnedVariant(cycle, key);
+    render();
+    return;
+  }
+  const pill = e.target.closest('.req-pill');
+  if (!pill) return;
+  const card = pill.closest('[data-cycle][data-key]');
+  if (!card) return;
+  const cycle = card.getAttribute('data-cycle');
+  const key = card.getAttribute('data-key');
+  const variant = pill.getAttribute('data-variant') || '';
+  const currentSelected = getOwnedVariant(cycle, key);
+  if (currentSelected === variant) {
+    clearOwnedVariant(cycle, key);
+  } else if (variant) {
+    setOwnedVariant(cycle, key, variant);
+  }
+  render();
+});
+
+
+for (const el of [els.cycleSel, els.currentSel, els.targetSel, els.sortSel, els.searchBox, els.modeSel]) {
+  el.addEventListener('input', render);
+  el.addEventListener('change', render);
+}
+els.resetCycleBtn.addEventListener('click', () => {
+  const cycle = els.cycleSel.value;
+  if (!confirm(`Reset all saved progress for Cycle ${cycle}? This cannot be undone.`)) return;
+  clearCycleProgress(cycle);
+  render();
+});
+els.resetAllBtn.addEventListener('click', () => {
+  if (!confirm('Reset all saved progress for every cycle? This cannot be undone.')) return;
+  clearAllProgress();
+  render();
+});
+
+// restore defaults / current browser state
+els.cycleSel.value = state.uiCycle || '1';
+els.currentSel.value = state.uiCurrent || '1';
+els.targetSel.value = state.uiTarget || '30';
+els.sortSel.value = state.uiSort || 'first';
+els.searchBox.value = state.uiSearch || '';
+els.modeSel.value = state.uiMode || 'needed';
+
+function persistUi() {
+  state.uiCycle = els.cycleSel.value;
+  state.uiCurrent = els.currentSel.value;
+  state.uiTarget = els.targetSel.value;
+  state.uiSort = els.sortSel.value;
+  state.uiSearch = els.searchBox.value;
+  state.uiMode = els.modeSel.value;
+  saveState();
+}
+for (const el of [els.cycleSel, els.currentSel, els.targetSel, els.sortSel, els.searchBox, els.modeSel]) {
+  el.addEventListener('change', persistUi);
+  el.addEventListener('input', persistUi);
+}
+
+render();
+</script>
+</body>
+</html>
