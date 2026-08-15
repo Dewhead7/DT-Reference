@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Droid Tycoon Reference v5.0</title>
+<title>Droid Tycoon Reference</title>
 <style>
   :root {
     --panel-width: 460px;
@@ -26,6 +26,8 @@
     --default-bg: #e5e7eb;
     --galactic: #ddd6fe;
     --galactic-bg: linear-gradient(90deg, #5b21b6 0%, #2563eb 52%, #0f766e 100%);
+    --stellar: #ffd43b;
+    --stellar-bg: #ffe36f;
     --accent: #7dd3fc;
     --lower: #f59e0b;
     --full: #22c55e;
@@ -81,30 +83,6 @@
     align-items: end;
   }
   .display-grid .field { min-width: 0; }
-.profile-grid {
-  display: grid;
-  gap: 6px;
-}
-.profile-actions {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px;
-}
-.profile-btn {
-  min-height: 34px;
-  padding: 6px 9px;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1.1;
-  white-space: normal;
-}
-.profile-btn:hover { border-color: #5b6473; background: #1a2030; }
-.profile-btn.danger {
-  color: #ffe4e6;
-  background: linear-gradient(180deg, #3a1018 0%, #22080d 100%);
-  border-color: #7f1d1d;
-}
-.profile-btn.danger:hover { background: linear-gradient(180deg, #4a121c 0%, #2a0a10 100%); }
   .reset-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -142,7 +120,7 @@
     padding: 8px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   }
-  .card.full-owned { border-color: rgba(34, 197, 94, 0.42); box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.08) inset; }
+  .card.full-owned { opacity: 0.55; }
   .card.lower-owned { border-color: rgba(245,158,11,0.5); }
 
 
@@ -165,12 +143,14 @@
   .need-rainbow { background: linear-gradient(90deg, #ff4040 0%, #ff9a00 22%, #ffe600 44%, #35d36f 66%, #38bdf8 83%, #8b5cf6 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; text-shadow: 0 0 1px rgba(255,255,255,.08); }
   .need-beskar { background: linear-gradient(180deg, #f8fafc 0%, #d7dde6 45%, #aab3c1 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; text-shadow: 0 0 1px rgba(255,255,255,.08); }
   .need-galactic { color: #8b5cf6; text-shadow: 0 0 3px rgba(139,92,246,.25); }
+  .need-stellar { color: #ffd43b; text-shadow: 0 0 3px rgba(255,212,59,.25); }
   .chip.default { color: #364152; background: var(--default-bg); border-color: #cfd6e2; }
   .chip.gold { color: #6b4a00; background: linear-gradient(180deg, #fff4c0, var(--gold-bg)); border-color: var(--gold); }
   .chip.diamond { color: #065f8f; background: linear-gradient(180deg, #effbff, var(--diamond-bg)); border-color: var(--diamond); }
   .chip.rainbow { color: var(--rainbow); background: var(--rainbow-bg); border-color: rgba(255,255,255,0.18); }
   .chip.beskar { color: #394150; background: linear-gradient(180deg, #fbfcfe, var(--silver-bg)); border-color: var(--silver); }
   .chip.galactic { color: var(--rainbow); background: var(--galactic-bg); border-color: rgba(255,255,255,0.18); }
+  .chip.stellar { color: #3f3200; background: linear-gradient(180deg, #fff4a8, #e7bb16); border-color: #f0c72a; }
   .chip.rarity-common { color: #f8fafc; background: linear-gradient(180deg, #6b7280, #4b5563); border-color: #9ca3af; }
   .chip.rarity-rare { color: #0f172a; background: linear-gradient(180deg, #67e8f9, #38bdf8); border-color: #22d3ee; }
   .chip.rarity-epic { color: #f8fafc; background: linear-gradient(180deg, #8b5cf6, #5b21b6); border-color: #7c3aed; }
@@ -227,7 +207,7 @@
     border-color: rgba(245, 158, 11, 0.38);
     background: rgba(255,255,255,0.02);
   }
-  .sell-card.full-owned { border-color: rgba(245, 158, 11, 0.58); box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.10) inset; }
+  .sell-card.full-owned { opacity: 0.72; }
   .sell-card.lower-owned { border-color: rgba(245, 158, 11, 0.58); }
   .sell-btn {
     border: 1px solid #7f1d1d;
@@ -283,21 +263,19 @@
   .req-pill.selected {
     position: relative;
     z-index: 2;
-    outline: none;
+    outline: 3px solid #000;
+    outline-offset: -2px;
     box-shadow:
-      0 0 0 1px rgba(255,255,255,0.9),
-      0 0 0 2px rgba(125,211,252,0.95),
+      0 0 0 1px rgba(255,255,255,0.92),
+      0 0 0 3px rgba(0,0,0,0.98),
       0 2px 6px rgba(0,0,0,0.34);
-    filter: saturate(1.06) brightness(1.03);
+    transform: translateY(-1px) scale(1.08);
+    filter: saturate(1.08) brightness(1.02);
     font-weight: 900;
   }
   .req-pill.covered {
     opacity: 0.44;
     filter: saturate(0.74);
-  }
-  .req-pill.covered.selected {
-    opacity: 1;
-    filter: saturate(1.06) brightness(1.03);
   }
   .req-pill.blank {
     opacity: 0.24;
@@ -310,6 +288,7 @@
   .req-pill.rainbow { --pill-bg: linear-gradient(90deg, #ff4d4d 0%, #ff8f1f 15%, #ffd84d 30%, #4fe28a 48%, #38bdf8 66%, #6366f1 83%, #b56bff 100%); border-color: rgba(255,255,255,0.22); }
   .req-pill.beskar { --pill-bg: linear-gradient(180deg, #fbfcfe 0%, #d8dde5 48%, #b1bac7 100%); border-color: #9ca3af; }
   .req-pill.galactic { --pill-bg: linear-gradient(180deg, #a78bfa 0%, #8b5cf6 52%, #6d28d9 100%); border-color: #8b5cf6; }
+  .req-pill.stellar { --pill-bg: linear-gradient(180deg, #fff08a 0%, #f0c62e 55%, #d89f00 100%); --pill-fg: #3f3200; border-color: #f1c232; }
 </style>
 </head>
 <body>
@@ -317,21 +296,9 @@
 <div class="topbar">
 <div class="title">
 <h1>Droid Tycoon Reference</h1>
-<div class="meta" id="profileMeta">Current tables through Rebirth 30</div>
+<div class="meta">Current tables through Rebirth 35</div>
 </div>
 <div class="controls">
-<div class="field span-3">
-<div class="label">Profile</div>
-<div class="profile-grid">
-<select aria-label="Profile" class="control" id="profileSel"></select>
-<div class="profile-actions">
-<button class="control profile-btn" id="newProfileBtn" type="button">New</button>
-<button class="control profile-btn" id="renameProfileBtn" type="button">Rename</button>
-<button class="control profile-btn" id="dupProfileBtn" type="button">Duplicate</button>
-<button class="control profile-btn danger" id="deleteProfileBtn" type="button">Delete</button>
-</div>
-</div>
-</div>
 <div class="field">
 <div class="label">Cycle</div>
 <select aria-label="Super Rebirth cycle" class="control" id="cycleSel">
@@ -339,6 +306,7 @@
 <option value="2">Cycle 2</option>
 <option value="3">Cycle 3</option>
 <option value="4">Cycle 4</option>
+<option value="5">Cycle 5</option>
 </select>
 </div>
 <div class="field">
@@ -402,6 +370,7 @@
 <button class="control reset-btn danger" id="resetAllBtn" type="button">Reset all progress</button>
 </div>
 </div>
+<div class="footer">Selected variance is now the saved ownership state. The dot still reflects whether that owned variance completes the row for the current target RB. Use View to switch between All, Planning, and Needed. The Sellable section shows owned droids whose requirement window is already behind Current RB. Display-name variants were normalized across the database, while the progression rows themselves were left intact. Variance order is Default → Gold → Diamond → Rainbow → Beskar → Galactic → Stellar.</div>
 </div>
 <!-- DATABASE SECTION: edit only this block when requirements change -->
 <script id="droid-db" type="application/json">{
@@ -411,7 +380,8 @@
     "Diamond",
     "Rainbow",
     "Beskar",
-    "Galactic"
+    "Galactic",
+    "Stellar"
   ],
   "cycles": {
     "1": [
@@ -580,6 +550,10 @@
           [
             21,
             "B"
+          ],
+          [
+            34,
+            "ST"
           ]
         ]
       },
@@ -610,6 +584,10 @@
           [
             21,
             "B"
+          ],
+          [
+            34,
+            "ST"
           ]
         ]
       },
@@ -710,6 +688,10 @@
           [
             22,
             "B"
+          ],
+          [
+            33,
+            "ST"
           ]
         ]
       },
@@ -733,6 +715,10 @@
           [
             24,
             "B"
+          ],
+          [
+            35,
+            "ST"
           ]
         ]
       },
@@ -818,6 +804,10 @@
           [
             28,
             "GA"
+          ],
+          [
+            31,
+            "B"
           ]
         ]
       },
@@ -872,6 +862,10 @@
           [
             24,
             "B"
+          ],
+          [
+            33,
+            "GA"
           ]
         ]
       },
@@ -933,6 +927,10 @@
           [
             21,
             "B"
+          ],
+          [
+            32,
+            "GA"
           ]
         ]
       },
@@ -963,6 +961,10 @@
           [
             28,
             "B"
+          ],
+          [
+            33,
+            "GA"
           ]
         ]
       },
@@ -978,6 +980,10 @@
           [
             29,
             "B"
+          ],
+          [
+            35,
+            "ST"
           ]
         ]
       },
@@ -993,6 +999,10 @@
           [
             30,
             "B"
+          ],
+          [
+            34,
+            "GA"
           ]
         ]
       },
@@ -1030,6 +1040,10 @@
           [
             27,
             "DI"
+          ],
+          [
+            31,
+            "B"
           ]
         ]
       },
@@ -1041,6 +1055,10 @@
           [
             27,
             "B"
+          ],
+          [
+            35,
+            "ST"
           ]
         ]
       },
@@ -1052,6 +1070,39 @@
           [
             27,
             "R"
+          ]
+        ]
+      },
+      {
+        "key": "sentri",
+        "name": "Sen-TRI",
+        "rarity": "Common",
+        "requirements": [
+          [
+            31,
+            "ST"
+          ]
+        ]
+      },
+      {
+        "key": "optipod",
+        "name": "Opti-POD",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            32,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "ric",
+        "name": "RIC",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            32,
+            "B"
           ]
         ]
       }
@@ -1249,6 +1300,10 @@
           [
             8,
             "G"
+          ],
+          [
+            32,
+            "GA"
           ]
         ]
       },
@@ -1268,6 +1323,10 @@
           [
             12,
             "R"
+          ],
+          [
+            33,
+            "ST"
           ]
         ]
       },
@@ -1287,6 +1346,10 @@
           [
             13,
             "R"
+          ],
+          [
+            31,
+            "ST"
           ]
         ]
       },
@@ -1436,6 +1499,10 @@
           [
             24,
             "B"
+          ],
+          [
+            31,
+            "B"
           ]
         ]
       },
@@ -1459,6 +1526,10 @@
           [
             29,
             "GA"
+          ],
+          [
+            35,
+            "ST"
           ]
         ]
       },
@@ -1538,6 +1609,10 @@
           [
             30,
             "GA"
+          ],
+          [
+            33,
+            "GA"
           ]
         ]
       },
@@ -1560,6 +1635,10 @@
           [
             21,
             "B"
+          ],
+          [
+            34,
+            "ST"
           ]
         ]
       },
@@ -1571,6 +1650,10 @@
           [
             21,
             "B"
+          ],
+          [
+            34,
+            "ST"
           ]
         ]
       },
@@ -1638,6 +1721,10 @@
           [
             30,
             "GA"
+          ],
+          [
+            35,
+            "ST"
           ]
         ]
       },
@@ -1664,6 +1751,10 @@
           [
             30,
             "B"
+          ],
+          [
+            33,
+            "GA"
           ]
         ]
       },
@@ -1675,6 +1766,10 @@
           [
             27,
             "DI"
+          ],
+          [
+            32,
+            "B"
           ]
         ]
       },
@@ -1686,6 +1781,10 @@
           [
             27,
             "R"
+          ],
+          [
+            31,
+            "B"
           ]
         ]
       },
@@ -1708,6 +1807,32 @@
           [
             29,
             "B"
+          ],
+          [
+            34,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "b1heavy",
+        "name": "B1 Heavy",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            32,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "cyclens",
+        "name": "Cyclens",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            35,
+            "ST"
           ]
         ]
       }
@@ -1928,6 +2053,10 @@
           [
             12,
             "G"
+          ],
+          [
+            32,
+            "GA"
           ]
         ]
       },
@@ -1943,6 +2072,10 @@
           [
             12,
             "G"
+          ],
+          [
+            33,
+            "ST"
           ]
         ]
       },
@@ -1958,6 +2091,10 @@
           [
             14,
             "R"
+          ],
+          [
+            31,
+            "ST"
           ]
         ]
       },
@@ -1977,6 +2114,10 @@
           [
             21,
             "B"
+          ],
+          [
+            34,
+            "ST"
           ]
         ]
       },
@@ -2030,6 +2171,10 @@
           [
             29,
             "GA"
+          ],
+          [
+            31,
+            "B"
           ]
         ]
       },
@@ -2053,6 +2198,10 @@
           [
             25,
             "B"
+          ],
+          [
+            35,
+            "ST"
           ]
         ]
       },
@@ -2167,6 +2316,10 @@
           [
             23,
             "B"
+          ],
+          [
+            33,
+            "GA"
           ]
         ]
       },
@@ -2260,6 +2413,10 @@
           [
             28,
             "R"
+          ],
+          [
+            35,
+            "ST"
           ]
         ]
       },
@@ -2271,6 +2428,10 @@
           [
             25,
             "D"
+          ],
+          [
+            33,
+            "GA"
           ]
         ]
       },
@@ -2285,6 +2446,10 @@
           ],
           [
             28,
+            "B"
+          ],
+          [
+            32,
             "B"
           ]
         ]
@@ -2301,6 +2466,10 @@
           [
             30,
             "B"
+          ],
+          [
+            34,
+            "GA"
           ]
         ]
       },
@@ -2364,6 +2533,43 @@
           [
             27,
             "DI"
+          ],
+          [
+            31,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "bb",
+        "name": "BB",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            32,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "orbwalker",
+        "name": "ORB-Walker",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            34,
+            "ST"
+          ]
+        ]
+      },
+      {
+        "key": "kx",
+        "name": "KX",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            35,
+            "ST"
           ]
         ]
       }
@@ -2611,6 +2817,10 @@
           [
             14,
             "R"
+          ],
+          [
+            31,
+            "ST"
           ]
         ]
       },
@@ -2626,6 +2836,10 @@
           [
             15,
             "DI"
+          ],
+          [
+            33,
+            "ST"
           ]
         ]
       },
@@ -2740,6 +2954,10 @@
           [
             23,
             "B"
+          ],
+          [
+            35,
+            "ST"
           ]
         ]
       },
@@ -2758,6 +2976,10 @@
           ],
           [
             29,
+            "GA"
+          ],
+          [
+            33,
             "GA"
           ]
         ]
@@ -2800,6 +3022,10 @@
           ],
           [
             23,
+            "B"
+          ],
+          [
+            31,
             "B"
           ]
         ]
@@ -2854,6 +3080,10 @@
           [
             21,
             "B"
+          ],
+          [
+            34,
+            "ST"
           ]
         ]
       },
@@ -2887,6 +3117,10 @@
           [
             22,
             "B"
+          ],
+          [
+            34,
+            "ST"
           ]
         ]
       },
@@ -2902,6 +3136,10 @@
           [
             26,
             "R"
+          ],
+          [
+            34,
+            "GA"
           ]
         ]
       },
@@ -2927,6 +3165,10 @@
           ],
           [
             29,
+            "B"
+          ],
+          [
+            31,
             "B"
           ]
         ]
@@ -2954,6 +3196,10 @@
           [
             26,
             "DI"
+          ],
+          [
+            35,
+            "ST"
           ]
         ]
       },
@@ -2965,6 +3211,10 @@
           [
             27,
             "B"
+          ],
+          [
+            35,
+            "ST"
           ]
         ]
       },
@@ -2976,6 +3226,10 @@
           [
             27,
             "DI"
+          ],
+          [
+            33,
+            "GA"
           ]
         ]
       },
@@ -3002,6 +3256,10 @@
           [
             30,
             "GA"
+          ],
+          [
+            32,
+            "B"
           ]
         ]
       },
@@ -3015,6 +3273,793 @@
             "B"
           ]
         ]
+      },
+      {
+        "key": "r2",
+        "name": "R2",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            32,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "r6",
+        "name": "R6",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            32,
+            "GA"
+          ]
+        ]
+      }
+    ],
+    "5": [
+      {
+        "key": "id10",
+        "name": "ID10",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "mouse",
+        "name": "Mouse",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "gonk",
+        "name": "Gonk",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "2bb",
+        "name": "2BB",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ],
+          [
+            6,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "imperialprobe",
+        "name": "Imperial Probe",
+        "rarity": "Common",
+        "requirements": [
+          [
+            2,
+            "G"
+          ],
+          [
+            10,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "rollr",
+        "name": "Roll-R",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "r4",
+        "name": "R4",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "D"
+          ],
+          [
+            5,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "vectarm",
+        "name": "Vect-ARM",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "bdxexplorer",
+        "name": "BDX Explorer",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "G"
+          ],
+          [
+            6,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "r9",
+        "name": "R9",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            4,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "b1battle",
+        "name": "B1 Battle",
+        "rarity": "Common",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            8,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "b1security",
+        "name": "B1 Security",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            4,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "balcore",
+        "name": "BAL-Core",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            5,
+            "G"
+          ],
+          [
+            12,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "r3",
+        "name": "R3",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            5,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "gunrunner",
+        "name": "Gunrunner",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            6,
+            "D"
+          ],
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "r5",
+        "name": "R5",
+        "rarity": "Common",
+        "requirements": [
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "r2",
+        "name": "R2",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            7,
+            "G"
+          ],
+          [
+            13,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "b2super",
+        "name": "B2 Super",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            8,
+            "G"
+          ],
+          [
+            11,
+            "D"
+          ],
+          [
+            13,
+            "G"
+          ],
+          [
+            15,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "r8",
+        "name": "R8",
+        "rarity": "Common",
+        "requirements": [
+          [
+            8,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "navex",
+        "name": "NAV-EX",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            9,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "strikeorb",
+        "name": "Strike-ORB",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            9,
+            "G"
+          ],
+          [
+            21,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "ampwalker",
+        "name": "AMP Walker",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            9,
+            "G"
+          ],
+          [
+            31,
+            "ST"
+          ]
+        ]
+      },
+      {
+        "key": "groundmech",
+        "name": "Groundmech",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            10,
+            "D"
+          ],
+          [
+            12,
+            "G"
+          ],
+          [
+            14,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "trakr",
+        "name": "TRAK-R",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            10,
+            "D"
+          ],
+          [
+            12,
+            "G"
+          ],
+          [
+            14,
+            "DI"
+          ],
+          [
+            32,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "b2heavy",
+        "name": "B2 Heavy",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            11,
+            "D"
+          ],
+          [
+            13,
+            "G"
+          ],
+          [
+            15,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "utiltec",
+        "name": "Util-TEC",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            11,
+            "D"
+          ],
+          [
+            14,
+            "R"
+          ],
+          [
+            33,
+            "ST"
+          ]
+        ]
+      },
+      {
+        "key": "b2rp",
+        "name": "B2-RP",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            15,
+            "D"
+          ],
+          [
+            18,
+            "G"
+          ],
+          [
+            20,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "bb9",
+        "name": "BB9",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            16,
+            "D"
+          ],
+          [
+            18,
+            "G"
+          ],
+          [
+            20,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ],
+          [
+            28,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "r7",
+        "name": "R7",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            16,
+            "G"
+          ],
+          [
+            18,
+            "DI"
+          ],
+          [
+            20,
+            "R"
+          ],
+          [
+            30,
+            "GA"
+          ],
+          [
+            33,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "protoroller",
+        "name": "Proto-Roller",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            16,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "optistrk",
+        "name": "Opti-STRK",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            17,
+            "D"
+          ],
+          [
+            19,
+            "DI"
+          ],
+          [
+            24,
+            "B"
+          ],
+          [
+            29,
+            "GA"
+          ],
+          [
+            31,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "cyclograv",
+        "name": "Cyclo-GRAV",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            17,
+            "G"
+          ],
+          [
+            19,
+            "DI"
+          ],
+          [
+            23,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "mechadroid",
+        "name": "Mecha-Droid",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            17,
+            "G"
+          ],
+          [
+            19,
+            "R"
+          ],
+          [
+            25,
+            "B"
+          ],
+          [
+            29,
+            "GA"
+          ],
+          [
+            35,
+            "ST"
+          ]
+        ]
+      },
+      {
+        "key": "lo",
+        "name": "LO",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            21,
+            "B"
+          ],
+          [
+            32,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "haulr",
+        "name": "HAUL-R",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            21,
+            "B"
+          ],
+          [
+            34,
+            "ST"
+          ]
+        ]
+      },
+      {
+        "key": "sentri",
+        "name": "Sen-TRI",
+        "rarity": "Common",
+        "requirements": [
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "r6",
+        "name": "R6",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "monowlkr",
+        "name": "Mono-WLKR",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            24,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "motrak",
+        "name": "MO-Trak",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            24,
+            "D"
+          ],
+          [
+            28,
+            "B"
+          ],
+          [
+            35,
+            "ST"
+          ]
+        ]
+      },
+      {
+        "key": "ric",
+        "name": "RIC",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            25,
+            "D"
+          ],
+          [
+            28,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "tritek",
+        "name": "Tri-TEK",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            25,
+            "G"
+          ],
+          [
+            33,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "cyclens",
+        "name": "Cyclens",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "G"
+          ],
+          [
+            30,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "lep",
+        "name": "LEP",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "DI"
+          ],
+          [
+            30,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "snowmouse",
+        "name": "Snow Mouse",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "R"
+          ],
+          [
+            31,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "ric1200",
+        "name": "RIC-1200",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "DI"
+          ],
+          [
+            35,
+            "ST"
+          ]
+        ]
+      },
+      {
+        "key": "ig",
+        "name": "IG",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "R"
+          ],
+          [
+            29,
+            "B"
+          ],
+          [
+            34,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "loadlifter",
+        "name": "Loadlifter",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "drftr",
+        "name": "DRFT-R",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            32,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "lngshot",
+        "name": "LNG-Shot",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            34,
+            "ST"
+          ]
+        ]
       }
     ]
   }
@@ -3023,7 +4068,7 @@
 const DB = JSON.parse(document.getElementById('droid-db').textContent);
 const VARIANT_ORDER = DB.varianceOrder || ['Default','Gold','Diamond','Rainbow','Beskar','Galactic'];
 const VARIANT_RANK = Object.fromEntries(VARIANT_ORDER.map((v, i) => [v, i]));
-const VARIANT_CODE = {Default:'D', Gold:'G', Diamond:'DI', Rainbow:'R', Beskar:'B', Galactic:'GA'};
+const VARIANT_CODE = {Default:'D', Gold:'G', Diamond:'DI', Rainbow:'R', Beskar:'B', Galactic:'GA', Stellar:'ST'};
 const CODE_TO_VARIANT = Object.fromEntries(Object.entries(VARIANT_CODE).map(([k, v]) => [v, k]));
 
 function validateDB() {
@@ -3055,12 +4100,6 @@ const STORAGE = 'droid_tycoon_edge_reference_state_v9';
 
 const els = {
   shell: document.getElementById('shell'),
-  profileMeta: document.getElementById('profileMeta'),
-  profileSel: document.getElementById('profileSel'),
-  newProfileBtn: document.getElementById('newProfileBtn'),
-  renameProfileBtn: document.getElementById('renameProfileBtn'),
-  dupProfileBtn: document.getElementById('dupProfileBtn'),
-  deleteProfileBtn: document.getElementById('deleteProfileBtn'),
   cycleSel: document.getElementById('cycleSel'),
   currentSel: document.getElementById('currentSel'),
   targetSel: document.getElementById('targetSel'),
@@ -3080,247 +4119,28 @@ const els = {
   sellableEmpty: document.getElementById('sellableEmpty'),
 };
 
-const DEFAULT_PROFILE_ID = 'default';
-
-function loadStore() {
+function loadState() {
   try { return JSON.parse(localStorage.getItem(STORAGE) || '{}'); } catch (e) { return {}; }
 }
+function saveState() { localStorage.setItem(STORAGE, JSON.stringify(state)); }
+let state = loadState();
 
-function cloneState(source) {
-  return JSON.parse(JSON.stringify(source || {}));
+if (state.uiHideOwned !== undefined) delete state.uiHideOwned;
+if (state.uiHideLower !== undefined) delete state.uiHideLower;
+if (state.uiCompact !== undefined) delete state.uiCompact;
+if (!['all', 'planning', 'needed'].includes(state.uiMode)) state.uiMode = 'needed';
+
+// Migrate renamed display-name state keys from earlier versions.
+if (state['c1:cycolens'] !== undefined && state['c1:cyclens'] === undefined) {
+  state['c1:cyclens'] = state['c1:cycolens'];
 }
+if ('c1:cycolens' in state) delete state['c1:cycolens'];
 
-function dedupeOrder(order) {
-  const seen = new Set();
-  const out = [];
-  for (const id of order || []) {
-    if (!id || seen.has(id)) continue;
-    seen.add(id);
-    out.push(id);
-  }
-  return out;
+if (state['c1:drift-r'] !== undefined && state['c1:drft-r'] === undefined) {
+  state['c1:drft-r'] = state['c1:drift-r'];
 }
+if ('c1:drift-r' in state) delete state['c1:drift-r'];
 
-function normalizeStateShape(profileState) {
-  const state = profileState && typeof profileState === 'object' && !Array.isArray(profileState) ? profileState : {};
-
-  if (state.uiHideOwned !== undefined) delete state.uiHideOwned;
-  if (state.uiHideLower !== undefined) delete state.uiHideLower;
-  if (state.uiCompact !== undefined) delete state.uiCompact;
-  if (!['all', 'planning', 'needed'].includes(state.uiMode)) state.uiMode = 'needed';
-
-  // Migrate renamed display-name state keys from earlier versions.
-  if (state['c1:cycolens'] !== undefined && state['c1:cyclens'] === undefined) {
-    state['c1:cyclens'] = state['c1:cycolens'];
-  }
-  if ('c1:cycolens' in state) delete state['c1:cycolens'];
-
-  if (state['c1:drift-r'] !== undefined && state['c1:drft-r'] === undefined) {
-    state['c1:drft-r'] = state['c1:drift-r'];
-  }
-  if ('c1:drift-r' in state) delete state['c1:drift-r'];
-
-  return state;
-}
-
-function normalizeProfileStore(raw) {
-  const input = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
-  if (input.profiles && typeof input.profiles === 'object' && !Array.isArray(input.profiles)) {
-    const profiles = {};
-    const order = dedupeOrder(Array.isArray(input.profileOrder) ? input.profileOrder : Object.keys(input.profiles));
-    for (const [id, entry] of Object.entries(input.profiles)) {
-      if (!entry || typeof entry !== 'object' || Array.isArray(entry)) continue;
-      const name = typeof entry.name === 'string' && entry.name.trim() ? entry.name.trim() : id;
-      profiles[id] = { name, state: normalizeStateShape(cloneState(entry.state)) };
-      if (!order.includes(id)) order.push(id);
-    }
-    if (!order.length) order.push(DEFAULT_PROFILE_ID);
-    if (!profiles[order[0]]) profiles[order[0]] = { name: 'Default', state: normalizeStateShape({}) };
-    const activeProfileId = (typeof input.activeProfileId === 'string' && profiles[input.activeProfileId]) ? input.activeProfileId : order[0];
-    return { version: 1, activeProfileId, profileOrder: order, profiles };
-  }
-
-  const legacyState = normalizeStateShape(cloneState(input));
-  return {
-    version: 1,
-    activeProfileId: DEFAULT_PROFILE_ID,
-    profileOrder: [DEFAULT_PROFILE_ID],
-    profiles: {
-      [DEFAULT_PROFILE_ID]: { name: 'Default', state: legacyState },
-    },
-  };
-}
-
-let store = normalizeProfileStore(loadStore());
-let activeProfileId = store.activeProfileId;
-let state = store.profiles[activeProfileId]?.state || {};
-state = normalizeStateShape(state);
-store.profiles[activeProfileId] = store.profiles[activeProfileId] || { name: 'Default', state: {} };
-store.profiles[activeProfileId].state = state;
-
-function syncActiveProfileState() {
-  store.activeProfileId = activeProfileId;
-  store.profiles[activeProfileId] = store.profiles[activeProfileId] || { name: 'Default', state: {} };
-  store.profiles[activeProfileId].state = state;
-}
-
-function saveState() {
-  syncActiveProfileState();
-  localStorage.setItem(STORAGE, JSON.stringify(store));
-}
-
-function profileName(id) {
-  return store.profiles[id]?.name || 'Default';
-}
-
-function updateProfileHeader() {
-  if (!els.profileMeta) return;
-  els.profileMeta.textContent = `Current tables through Rebirth 30 · Profile: ${profileName(activeProfileId)}`;
-}
-
-function applyUiFromState() {
-  els.cycleSel.value = state.uiCycle || '1';
-  els.currentSel.value = state.uiCurrent || '1';
-  els.targetSel.value = state.uiTarget || '30';
-  els.sortSel.value = state.uiSort || 'first';
-  els.searchBox.value = state.uiSearch || '';
-  els.modeSel.value = state.uiMode || 'needed';
-  if (els.profileSel) els.profileSel.value = activeProfileId;
-  updateProfileHeader();
-}
-
-function refreshProfilePicker() {
-  if (!els.profileSel) return;
-  els.profileSel.innerHTML = '';
-  for (const id of store.profileOrder) {
-    const entry = store.profiles[id];
-    if (!entry) continue;
-    const option = document.createElement('option');
-    option.value = id;
-    option.textContent = entry.name || id;
-    els.profileSel.appendChild(option);
-  }
-  els.profileSel.value = activeProfileId;
-  const onlyOne = (store.profileOrder || []).filter((id) => store.profiles[id]).length <= 1;
-  els.deleteProfileBtn.disabled = onlyOne;
-  updateProfileHeader();
-}
-
-function uniqueProfileName(base, excludeId = '') {
-  const clean = String(base || '').trim() || 'Profile';
-  const used = new Set(
-    Object.entries(store.profiles)
-      .filter(([id]) => id !== excludeId)
-      .map(([, entry]) => entry?.name || '')
-  );
-  if (!used.has(clean)) return clean;
-  let i = 2;
-  while (used.has(`${clean} ${i}`)) i += 1;
-  return `${clean} ${i}`;
-}
-
-function makeProfileId(base) {
-  const slug = String(base || 'profile')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '') || 'profile';
-  let id = slug;
-  let i = 2;
-  while (store.profiles[id]) {
-    id = `${slug}-${i}`;
-    i += 1;
-  }
-  return id;
-}
-
-function stripOwnershipKeys(profileState) {
-  for (const key of Object.keys(profileState)) {
-    if (/^c\d+:/.test(key)) delete profileState[key];
-  }
-}
-
-function switchProfile(profileId) {
-  if (!profileId || profileId === activeProfileId || !store.profiles[profileId]) return;
-  saveState();
-  activeProfileId = profileId;
-  state = normalizeStateShape(store.profiles[activeProfileId].state || {});
-  store.profiles[activeProfileId].state = state;
-  applyUiFromState();
-  refreshProfilePicker();
-  saveState();
-  render();
-}
-
-function createProfileFromTemplate(templateName, templateState, clearOwnership) {
-  const name = uniqueProfileName(templateName);
-  const id = makeProfileId(name);
-  const nextState = normalizeStateShape(cloneState(templateState));
-  if (clearOwnership) stripOwnershipKeys(nextState);
-  store.profiles[id] = { name, state: nextState };
-  store.profileOrder.push(id);
-  activeProfileId = id;
-  state = store.profiles[id].state;
-  applyUiFromState();
-  refreshProfilePicker();
-  saveState();
-  render();
-}
-
-function renameActiveProfile() {
-  const entry = store.profiles[activeProfileId];
-  if (!entry) return;
-  const nextName = prompt('Rename this profile:', entry.name || 'Profile');
-  if (nextName === null) return;
-  const clean = uniqueProfileName(nextName, activeProfileId);
-  entry.name = clean;
-  refreshProfilePicker();
-  saveState();
-  render();
-}
-
-function duplicateActiveProfile() {
-  const entry = store.profiles[activeProfileId];
-  if (!entry) return;
-  const nextName = prompt('Name the duplicate profile:', uniqueProfileName(`${entry.name || 'Profile'} Copy`));
-  if (nextName === null) return;
-  const clean = uniqueProfileName(nextName);
-  const id = makeProfileId(clean);
-  store.profiles[id] = { name: clean, state: normalizeStateShape(cloneState(state)) };
-  store.profileOrder.push(id);
-  activeProfileId = id;
-  state = store.profiles[id].state;
-  applyUiFromState();
-  refreshProfilePicker();
-  saveState();
-  render();
-}
-
-function createBlankProfile() {
-  const suggested = uniqueProfileName('Profile');
-  const name = prompt('Name this new profile:', suggested);
-  if (name === null) return;
-  createProfileFromTemplate(name, state, true);
-}
-
-function deleteActiveProfile() {
-  const ids = store.profileOrder.filter((id) => store.profiles[id]);
-  if (ids.length <= 1) return;
-  const entry = store.profiles[activeProfileId];
-  if (!confirm(`Delete profile "${entry?.name || 'Profile'}"? This cannot be undone.`)) return;
-  const currentIndex = ids.indexOf(activeProfileId);
-  delete store.profiles[activeProfileId];
-  store.profileOrder = ids.filter((id) => id !== activeProfileId);
-  const nextId = store.profileOrder[currentIndex] || store.profileOrder[currentIndex - 1] || store.profileOrder[0];
-  activeProfileId = nextId;
-  state = normalizeStateShape(store.profiles[activeProfileId].state || {});
-  store.profiles[activeProfileId].state = state;
-  applyUiFromState();
-  refreshProfilePicker();
-  saveState();
-  render();
-}
-
-saveState();
 function stateKey(cycle, name) { return `c${cycle}:${name.toLowerCase()}`; }
 function pillKey(cycle, name) { return `c${cycle}:${name.toLowerCase()}:pill`; }
 function selectionKey(cycle, name) { return `c${cycle}:${name.toLowerCase()}:selected`; }
@@ -3400,12 +4220,9 @@ function buildSelect(el, max) {
   for (let i = 1; i <= max; i++) options.push(`<option value="${i}">${i}</option>`);
   el.innerHTML = options.join('');
 }
-buildSelect(els.currentSel, 30);
-buildSelect(els.targetSel, 30);
+buildSelect(els.currentSel, 35);
+buildSelect(els.targetSel, 35);
 migrateLegacyOwnedVariants();
-refreshProfilePicker();
-applyUiFromState();
-saveState();
 
 function canonicalNeed(row, target) {
   let best = null;
@@ -3551,7 +4368,6 @@ function render() {
   const viewMode = els.modeSel.value;
 
   els.shell.classList.add('compact');
-  updateProfileHeader();
 
   const rows = [];
   const sellableRows = [];
@@ -3568,14 +4384,13 @@ function render() {
     const through = throughValue(row, targetRebirth);
     const first = firstRequired(row);
     const last = through;
-    const isAfterCurrent = through !== null && through > currentRebirth;
-    const isSellable = own > 0 && through !== null && through <= currentRebirth;
+    const sellable = own > 0 && through !== null && through < currentRebirth;
     const matches = !q || row.name.toLowerCase().includes(q) || row.rarity.toLowerCase().includes(q) || need.toLowerCase().includes(q);
     let modePass = true;
     if (viewMode === 'planning') {
-      modePass = isAfterCurrent;
+      modePass = through !== null && through >= currentRebirth;
     } else if (viewMode === 'needed') {
-      modePass = isAfterCurrent && own !== 2;
+      modePass = through !== null && through >= currentRebirth && own !== 2;
     }
     const show = matches && modePass;
 
@@ -3587,7 +4402,7 @@ function render() {
       incompleteCount += own === 1 ? 1 : 0;
       completeCount += own === 2 ? 1 : 0;
     }
-    if (isSellable && matches) sellableRows.push({...row, own, need, needRank, through, first, last});
+    if (sellable && matches) sellableRows.push({...row, own, need, needRank, through, first, last});
   }
 
   rows.sort((a, b) => cmp(a, b, sortMode));
@@ -3634,11 +4449,6 @@ for (const el of [els.cycleSel, els.currentSel, els.targetSel, els.sortSel, els.
   el.addEventListener('input', render);
   el.addEventListener('change', render);
 }
-els.profileSel.addEventListener('change', () => switchProfile(els.profileSel.value));
-els.newProfileBtn.addEventListener('click', createBlankProfile);
-els.renameProfileBtn.addEventListener('click', renameActiveProfile);
-els.dupProfileBtn.addEventListener('click', duplicateActiveProfile);
-els.deleteProfileBtn.addEventListener('click', deleteActiveProfile);
 els.resetCycleBtn.addEventListener('click', () => {
   const cycle = els.cycleSel.value;
   if (!confirm(`Reset all saved progress for Cycle ${cycle}? This cannot be undone.`)) return;
@@ -3651,8 +4461,14 @@ els.resetAllBtn.addEventListener('click', () => {
   render();
 });
 
-refreshProfilePicker();
-applyUiFromState();
+// restore defaults / current browser state
+els.cycleSel.value = state.uiCycle || '1';
+els.currentSel.value = state.uiCurrent || '1';
+els.targetSel.value = state.uiTarget || '35';
+els.sortSel.value = state.uiSort || 'first';
+els.searchBox.value = state.uiSearch || '';
+els.modeSel.value = state.uiMode || 'needed';
+
 function persistUi() {
   state.uiCycle = els.cycleSel.value;
   state.uiCurrent = els.currentSel.value;
