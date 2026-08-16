@@ -4843,6 +4843,12 @@ els.resetAllBtn.addEventListener('click', () => {
   render();
 });
 
+// Restore the saved profile/UI state immediately on first paint.
+// This is important because the profile picker must be populated synchronously
+// rather than waiting for an IndexedDB hydration promise to resolve.
+refreshProfilePicker();
+applyUiFromState();
+
 // restore defaults / current browser state
 els.cycleSel.value = state.uiCycle || '1';
 els.currentSel.value = state.uiCurrent || '1';
