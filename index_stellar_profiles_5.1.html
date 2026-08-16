@@ -4163,8 +4163,114 @@ const els = {
 
 const DEFAULT_PROFILE_ID = 'default';
 
+const IDB_NAME = 'droid_tycoon_edge_reference_db';
+const IDB_STORE = 'state';
+const IDB_KEY = 'store';
+let persistenceReady = false;
+let persistenceMode = 'memory';
+let localStorageAvailable = false;
+let localStorageHadData = false;
+
 function loadStore() {
-  try { return JSON.parse(localStorage.getItem(STORAGE) || '{}'); } catch (e) { return {}; }
+  try {
+    localStorageAvailable = true;
+    const raw = localStorage.getItem(STORAGE);
+    localStorageHadData = !!raw;
+    if (raw) {
+      persistenceMode = 'localStorage';
+      return JSON.parse(raw);
+    }
+  } catch (e) {
+    localStorageAvailable = false;
+    console.warn('LocalStorage unavailable; using persistent fallback when available.', e);
+  }
+  return {};
+}
+
+function openPersistenceDB() {
+  return new Promise((resolve, reject) => {
+    if (!('indexedDB' in window)) {
+      reject(new Error('IndexedDB unavailable'));
+      return;
+    }
+    const req = indexedDB.open(IDB_NAME, 1);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE);
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error || new Error('IndexedDB open failed'));
+  });
+}
+
+async function readIndexedStore() {
+  const db = await openPersistenceDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(IDB_STORE, 'readonly');
+    const req = tx.objectStore(IDB_STORE).get(IDB_KEY);
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror = () => reject(req.error || new Error('IndexedDB read failed'));
+    tx.oncomplete = () => db.close();
+  });
+}
+
+async function writeIndexedStore(value) {
+  const db = await openPersistenceDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(IDB_STORE, 'readwrite');
+    tx.objectStore(IDB_STORE).put(value, IDB_KEY);
+    tx.oncomplete = () => { db.close(); resolve(); };
+    tx.onerror = () => { db.close(); reject(tx.error || new Error('IndexedDB write failed')); };
+    tx.onabort = () => { db.close(); reject(tx.error || new Error('IndexedDB write aborted')); };
+  });
+}
+
+function writeLocalStore(value) {
+  try {
+    localStorage.setItem(STORAGE, JSON.stringify(value));
+    persistenceMode = 'localStorage';
+    return true;
+  } catch (e) {
+    console.warn('LocalStorage write failed.', e);
+    return false;
+  }
+}
+
+async function hydratePersistentStore() {
+  let indexed = null;
+  try { indexed = await readIndexedStore(); } catch (e) {
+    console.warn('IndexedDB read unavailable.', e);
+  }
+
+  if (!localStorageAvailable && indexed && typeof indexed === 'object') {
+    store = normalizeProfileStore(indexed);
+    activeProfileId = store.activeProfileId;
+    state = normalizeStateShape(store.profiles[activeProfileId]?.state || {});
+    store.profiles[activeProfileId].state = state;
+    applyUiFromState();
+    refreshProfilePicker();
+    render();
+    persistenceMode = 'indexedDB';
+  } else if (localStorageAvailable && !localStorageHadData && indexed && typeof indexed === 'object') {
+    // First launch in this browser/origin: restore the persistent IndexedDB backup.
+    store = normalizeProfileStore(indexed);
+    activeProfileId = store.activeProfileId;
+    state = normalizeStateShape(store.profiles[activeProfileId]?.state || {});
+    store.profiles[activeProfileId].state = state;
+    applyUiFromState();
+    refreshProfilePicker();
+    render();
+    writeLocalStore(store);
+    persistenceMode = 'localStorage+indexedDB';
+  } else {
+    // LocalStorage is working and already has state, so it is authoritative.
+    // Keep the IndexedDB copy synchronized without overwriting newer local data.
+    try { await writeIndexedStore(store); } catch (e) {
+      console.warn('IndexedDB write unavailable; LocalStorage remains the primary store.', e);
+    }
+    persistenceMode = localStorageAvailable ? 'localStorage+indexedDB' : 'memory';
+  }
+  persistenceReady = true;
 }
 
 function cloneState(source) {
@@ -4247,7 +4353,14 @@ function syncActiveProfileState() {
 
 function saveState() {
   syncActiveProfileState();
-  localStorage.setItem(STORAGE, JSON.stringify(store));
+  const snapshot = cloneState(store);
+  const localOk = writeLocalStore(snapshot);
+  if ('indexedDB' in window) {
+    writeIndexedStore(snapshot).catch((e) => console.warn('IndexedDB write failed.', e));
+    persistenceMode = localOk ? 'localStorage+indexedDB' : 'indexedDB';
+  } else if (!localOk) {
+    persistenceMode = 'memory';
+  }
 }
 
 function profileName(id) {
@@ -4401,7 +4514,10 @@ function deleteActiveProfile() {
   render();
 }
 
-saveState();
+// Finish loading the persistent fallback after the synchronous UI boot.
+// This is important for standalone HTML files where LocalStorage can be blocked.
+hydratePersistentStore().then(() => saveState()).catch((e) => console.warn('Persistent state hydration failed.', e));
+
 function stateKey(cycle, name) { return `c${cycle}:${name.toLowerCase()}`; }
 function pillKey(cycle, name) { return `c${cycle}:${name.toLowerCase()}:pill`; }
 function selectionKey(cycle, name) { return `c${cycle}:${name.toLowerCase()}:selected`; }
