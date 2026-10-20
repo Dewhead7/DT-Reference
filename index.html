@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Droid Tycoon Reference v5.22</title>
+<title>Droid Tycoon Reference v6.0</title>
 <style>
   :root {
     --panel-width: 460px;
@@ -245,6 +245,7 @@
   .next-req-pill.beskar { color: #394150; background: linear-gradient(180deg, #fbfcfe, #d8dde5 50%, #b1bac7); border-color: #9ca3af; }
   .next-req-pill.galactic { color: #fff; background: linear-gradient(180deg, #b39af8 0%, #8b5cf6 52%, #6d28d9 100%); border-color: #8b5cf6; }
   .next-req-pill.stellar { color: #3f3200; background: linear-gradient(180deg, #fff28c 0%, #f0ca37 55%, #d6a60b 100%); border-color: #f1c232; }
+  .next-req-pill.kyber { color: #062b12; background: linear-gradient(180deg, #c8ffd4 0%, #57ed7b 52%, #18a847 100%); border-color: #62f285; text-shadow: 0 0 2px rgba(255,255,255,.3); }
   .max-rb-next-empty { color: var(--muted); font-size: 10px; font-weight: 700; padding-top: 1px; }
   .listbar { display: grid; grid-template-columns: 1fr 1fr .5fr; gap: 6px; margin-top: 8px; }
   .listtool { min-width: 0; }
@@ -281,6 +282,7 @@
   .need-beskar { background: linear-gradient(180deg, #f8fafc 0%, #d7dde6 45%, #aab3c1 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; text-shadow: 0 0 1px rgba(255,255,255,.08); }
   .need-galactic { color: #8b5cf6; text-shadow: 0 0 3px rgba(139,92,246,.25); }
   .need-stellar { color: #ffd43b; text-shadow: 0 0 3px rgba(255,212,59,.25); }
+  .need-kyber { color: #62f285; text-shadow: 0 0 4px rgba(98,242,133,.32); }
   .chip.default { color: #364152; background: var(--default-bg); border-color: #cfd6e2; }
   .chip.gold { color: #6b4a00; background: linear-gradient(180deg, #fff4c0, var(--gold-bg)); border-color: var(--gold); }
   .chip.diamond { color: #065f8f; background: linear-gradient(180deg, #effbff, var(--diamond-bg)); border-color: var(--diamond); }
@@ -428,14 +430,15 @@
   .req-pill.beskar { --pill-bg: linear-gradient(180deg, #fbfcfe 0%, #d8dde5 48%, #b1bac7 100%); border-color: #9ca3af; }
   .req-pill.galactic { --pill-bg: linear-gradient(180deg, #a78bfa 0%, #8b5cf6 52%, #6d28d9 100%); border-color: #8b5cf6; }
   .req-pill.stellar { --pill-bg: linear-gradient(180deg, #fff08a 0%, #f0c62e 55%, #d89f00 100%); --pill-fg: #3f3200; border-color: #f1c232; }
+  .req-pill.kyber { --pill-bg: linear-gradient(180deg, #c8ffd4 0%, #57ed7b 52%, #18a847 100%); --pill-fg: #062b12; border-color: #62f285; }
 </style>
 </head>
 <body>
 <div class="shell" id="shell">
 <div class="topbar">
 <div class="title">
-<h1>Droid Tycoon Reference v5.22</h1>
-<div class="meta" id="profileMeta">Current tables through Rebirth 35</div>
+<h1>Droid Tycoon Reference v6.0</h1>
+<div class="meta" id="profileMeta">Current tables through Rebirth 40</div>
 </div>
 <div class="controls">
 <div class="field span-3">
@@ -458,6 +461,7 @@
 <option value="3">Cycle 3</option>
 <option value="4">Cycle 4</option>
 <option value="5">Cycle 5</option>
+<option value="6">Cycle 6</option>
 </select>
 </div>
 <div class="field">
@@ -536,7 +540,8 @@
     "Rainbow",
     "Beskar",
     "Galactic",
-    "Stellar"
+    "Stellar",
+    "Kyber"
   ],
   "cycles": {
     "1": [
@@ -581,6 +586,10 @@
           [
             2,
             "D"
+          ],
+          [
+            36,
+            "K"
           ]
         ]
       },
@@ -603,6 +612,10 @@
           [
             2,
             "D"
+          ],
+          [
+            36,
+            "K"
           ]
         ]
       },
@@ -618,6 +631,10 @@
           [
             6,
             "DI"
+          ],
+          [
+            36,
+            "K"
           ]
         ]
       },
@@ -709,6 +726,10 @@
           [
             34,
             "ST"
+          ],
+          [
+            37,
+            "K"
           ]
         ]
       },
@@ -743,6 +764,10 @@
           [
             34,
             "ST"
+          ],
+          [
+            37,
+            "K"
           ]
         ]
       },
@@ -780,6 +805,10 @@
           [
             9,
             "G"
+          ],
+          [
+            38,
+            "K"
           ]
         ]
       },
@@ -847,6 +876,10 @@
           [
             33,
             "ST"
+          ],
+          [
+            37,
+            "K"
           ]
         ]
       },
@@ -874,6 +907,10 @@
           [
             35,
             "ST"
+          ],
+          [
+            38,
+            "K"
           ]
         ]
       },
@@ -963,6 +1000,10 @@
           [
             31,
             "B"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -1048,6 +1089,10 @@
           [
             23,
             "B"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -1120,6 +1165,10 @@
           [
             33,
             "GA"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -1139,6 +1188,10 @@
           [
             35,
             "ST"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -1158,6 +1211,10 @@
           [
             34,
             "GA"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -1214,6 +1271,10 @@
           [
             35,
             "ST"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -1258,6 +1319,17 @@
           [
             32,
             "B"
+          ]
+        ]
+      },
+      {
+        "key": "r2",
+        "name": "R2",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            38,
+            "K"
           ]
         ]
       }
@@ -1372,6 +1444,10 @@
           [
             8,
             "DI"
+          ],
+          [
+            36,
+            "K"
           ]
         ]
       },
@@ -1440,6 +1516,10 @@
           [
             12,
             "R"
+          ],
+          [
+            37,
+            "K"
           ]
         ]
       },
@@ -1505,6 +1585,10 @@
           [
             31,
             "ST"
+          ],
+          [
+            38,
+            "K"
           ]
         ]
       },
@@ -1558,6 +1642,10 @@
           [
             14,
             "R"
+          ],
+          [
+            38,
+            "K"
           ]
         ]
       },
@@ -1604,6 +1692,10 @@
           [
             28,
             "GA"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -1658,6 +1750,10 @@
           [
             31,
             "B"
+          ],
+          [
+            38,
+            "K"
           ]
         ]
       },
@@ -1745,6 +1841,10 @@
           [
             29,
             "GA"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -1794,6 +1894,10 @@
           [
             34,
             "ST"
+          ],
+          [
+            37,
+            "K"
           ]
         ]
       },
@@ -1910,6 +2014,10 @@
           [
             33,
             "GA"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -1925,6 +2033,10 @@
           [
             32,
             "B"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -1940,6 +2052,10 @@
           [
             31,
             "B"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -1966,6 +2082,10 @@
           [
             34,
             "GA"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -1988,6 +2108,39 @@
           [
             35,
             "ST"
+          ]
+        ]
+      },
+      {
+        "key": "b1security",
+        "name": "B1 Security",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            36,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "r9",
+        "name": "R9",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            36,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "trakr",
+        "name": "TRAK-R",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            37,
+            "K"
           ]
         ]
       }
@@ -2080,6 +2233,10 @@
           [
             10,
             "R"
+          ],
+          [
+            36,
+            "K"
           ]
         ]
       },
@@ -2288,6 +2445,10 @@
           [
             18,
             "R"
+          ],
+          [
+            37,
+            "K"
           ]
         ]
       },
@@ -2430,6 +2591,10 @@
           [
             28,
             "GA"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -2441,6 +2606,10 @@
           [
             15,
             "R"
+          ],
+          [
+            37,
+            "K"
           ]
         ]
       },
@@ -2452,6 +2621,10 @@
           [
             16,
             "R"
+          ],
+          [
+            37,
+            "K"
           ]
         ]
       },
@@ -2475,6 +2648,10 @@
           [
             33,
             "GA"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -2520,6 +2697,10 @@
           [
             29,
             "GA"
+          ],
+          [
+            38,
+            "K"
           ]
         ]
       },
@@ -2553,6 +2734,10 @@
           [
             22,
             "B"
+          ],
+          [
+            38,
+            "K"
           ]
         ]
       },
@@ -2606,6 +2791,10 @@
           [
             32,
             "B"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -2647,6 +2836,10 @@
           [
             26,
             "DI"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -2677,6 +2870,10 @@
           [
             29,
             "B"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -2692,6 +2889,10 @@
           [
             31,
             "B"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -2725,6 +2926,39 @@
           [
             35,
             "ST"
+          ]
+        ]
+      },
+      {
+        "key": "arg",
+        "name": "ARG",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            36,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "bu4d",
+        "name": "B-U4D",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            36,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "haulr",
+        "name": "HAUL-R",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            38,
+            "K"
           ]
         ]
       }
@@ -2953,6 +3187,10 @@
           [
             21,
             "B"
+          ],
+          [
+            38,
+            "K"
           ]
         ]
       },
@@ -3048,6 +3286,10 @@
           [
             14,
             "DI"
+          ],
+          [
+            36,
+            "K"
           ]
         ]
       },
@@ -3086,6 +3328,10 @@
           [
             24,
             "B"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -3113,6 +3359,10 @@
           [
             35,
             "ST"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -3159,6 +3409,10 @@
           [
             29,
             "GA"
+          ],
+          [
+            38,
+            "K"
           ]
         ]
       },
@@ -3261,6 +3515,10 @@
           [
             22,
             "B"
+          ],
+          [
+            37,
+            "K"
           ]
         ]
       },
@@ -3306,6 +3564,10 @@
           [
             25,
             "G"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -3340,6 +3602,10 @@
           [
             30,
             "B"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -3396,6 +3662,10 @@
           [
             27,
             "R"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -3426,6 +3696,10 @@
           [
             28,
             "B"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -3450,6 +3724,61 @@
             "GA"
           ]
         ]
+      },
+      {
+        "key": "navex",
+        "name": "NAV-EX",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            36,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "vectarm",
+        "name": "Vect-ARM",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            36,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "sentri",
+        "name": "Sen-TRI",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            37,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "optipod",
+        "name": "Opti-POD",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            37,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "b1heavy",
+        "name": "B1 Heavy",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            38,
+            "K"
+          ]
+        ]
       }
     ],
     "5": [
@@ -3472,6 +3801,10 @@
           [
             1,
             "D"
+          ],
+          [
+            36,
+            "K"
           ]
         ]
       },
@@ -3528,6 +3861,10 @@
           [
             7,
             "DI"
+          ],
+          [
+            36,
+            "K"
           ]
         ]
       },
@@ -3673,6 +4010,10 @@
           [
             13,
             "DI"
+          ],
+          [
+            37,
+            "K"
           ]
         ]
       },
@@ -3790,6 +4131,10 @@
           [
             32,
             "GA"
+          ],
+          [
+            38,
+            "K"
           ]
         ]
       },
@@ -3943,6 +4288,10 @@
           [
             31,
             "B"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -3962,6 +4311,10 @@
           [
             23,
             "B"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -3989,6 +4342,10 @@
           [
             35,
             "ST"
+          ],
+          [
+            38,
+            "K"
           ]
         ]
       },
@@ -4004,6 +4361,10 @@
           [
             32,
             "GA"
+          ],
+          [
+            38,
+            "K"
           ]
         ]
       },
@@ -4041,6 +4402,10 @@
           [
             22,
             "B"
+          ],
+          [
+            37,
+            "K"
           ]
         ]
       },
@@ -4086,6 +4451,10 @@
           [
             28,
             "R"
+          ],
+          [
+            39,
+            "K"
           ]
         ]
       },
@@ -4131,6 +4500,10 @@
           [
             30,
             "B"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -4161,6 +4534,10 @@
           [
             35,
             "ST"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -4191,6 +4568,10 @@
           [
             27,
             "B"
+          ],
+          [
+            40,
+            "K"
           ]
         ]
       },
@@ -4215,15 +4596,800 @@
             "ST"
           ]
         ]
+      },
+      {
+        "key": "hovr",
+        "name": "HOV-R",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            36,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "bb",
+        "name": "BB",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            37,
+            "K"
+          ]
+        ]
+      }
+    ],
+    "6": [
+      {
+        "key": "gonk",
+        "name": "Gonk",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ],
+          [
+            5,
+            "G"
+          ],
+          [
+            9,
+            "DI"
+          ],
+          [
+            12,
+            "R"
+          ],
+          [
+            21,
+            "B"
+          ],
+          [
+            36,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "mouse",
+        "name": "Mouse",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "id10",
+        "name": "ID10",
+        "rarity": "Common",
+        "requirements": [
+          [
+            1,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "pit",
+        "name": "Pit",
+        "rarity": "Common",
+        "requirements": [
+          [
+            2,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "eg58",
+        "name": "EG-58",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ],
+          [
+            4,
+            "G"
+          ],
+          [
+            6,
+            "DI"
+          ],
+          [
+            31,
+            "B"
+          ],
+          [
+            36,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "2bb",
+        "name": "2BB",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            2,
+            "D"
+          ],
+          [
+            6,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "r3",
+        "name": "R3",
+        "rarity": "Common",
+        "requirements": [
+          [
+            3,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "r4",
+        "name": "R4",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "D"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "rollr",
+        "name": "Roll-R",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            3,
+            "D"
+          ],
+          [
+            36,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "r9",
+        "name": "R9",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            7,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "b1security",
+        "name": "B1 Security",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            4,
+            "G"
+          ],
+          [
+            8,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "r5",
+        "name": "R5",
+        "rarity": "Common",
+        "requirements": [
+          [
+            5,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "vectarm",
+        "name": "Vect-ARM",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            5,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "egl",
+        "name": "EGL",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            6,
+            "D"
+          ],
+          [
+            9,
+            "G"
+          ],
+          [
+            14,
+            "DI"
+          ],
+          [
+            17,
+            "R"
+          ],
+          [
+            21,
+            "B"
+          ],
+          [
+            28,
+            "GA"
+          ],
+          [
+            31,
+            "ST"
+          ],
+          [
+            37,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "kt",
+        "name": "KT",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            7,
+            "D"
+          ],
+          [
+            13,
+            "G"
+          ],
+          [
+            15,
+            "DI"
+          ],
+          [
+            18,
+            "R"
+          ],
+          [
+            22,
+            "B"
+          ],
+          [
+            29,
+            "GA"
+          ],
+          [
+            33,
+            "ST"
+          ],
+          [
+            38,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "mph",
+        "name": "MPH",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            8,
+            "D"
+          ],
+          [
+            13,
+            "G"
+          ],
+          [
+            15,
+            "DI"
+          ],
+          [
+            18,
+            "R"
+          ],
+          [
+            23,
+            "B"
+          ],
+          [
+            30,
+            "GA"
+          ],
+          [
+            34,
+            "ST"
+          ],
+          [
+            38,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "navex",
+        "name": "NAV-EX",
+        "rarity": "Rare",
+        "requirements": [
+          [
+            8,
+            "DI"
+          ]
+        ]
+      },
+      {
+        "key": "strikeorb",
+        "name": "Strike-ORB",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            9,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "groundmech",
+        "name": "Groundmech",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            10,
+            "D"
+          ],
+          [
+            12,
+            "G"
+          ],
+          [
+            22,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "trakr",
+        "name": "TRAK-R",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            10,
+            "D"
+          ],
+          [
+            12,
+            "G"
+          ],
+          [
+            32,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "ampwalker",
+        "name": "AMP Walker",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            10,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "b2super",
+        "name": "B2 Super",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            11,
+            "D"
+          ],
+          [
+            14,
+            "G"
+          ],
+          [
+            37,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "haulr",
+        "name": "HAUL-R",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            11,
+            "D"
+          ],
+          [
+            21,
+            "B"
+          ],
+          [
+            34,
+            "ST"
+          ]
+        ]
+      },
+      {
+        "key": "r2",
+        "name": "R2",
+        "rarity": "Epic",
+        "requirements": [
+          [
+            11,
+            "D"
+          ],
+          [
+            22,
+            "B"
+          ],
+          [
+            37,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "protoroller",
+        "name": "Proto-Roller",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            13,
+            "D"
+          ],
+          [
+            19,
+            "G"
+          ],
+          [
+            24,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "b2rp",
+        "name": "B2-RP",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            14,
+            "D"
+          ],
+          [
+            20,
+            "R"
+          ],
+          [
+            30,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "jo94mn",
+        "name": "JO9-4MN",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            15,
+            "D"
+          ],
+          [
+            17,
+            "G"
+          ],
+          [
+            19,
+            "DI"
+          ],
+          [
+            23,
+            "B"
+          ],
+          [
+            28,
+            "GA"
+          ],
+          [
+            35,
+            "ST"
+          ],
+          [
+            39,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "plnk",
+        "name": "PLNK",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            16,
+            "D"
+          ],
+          [
+            18,
+            "G"
+          ],
+          [
+            20,
+            "R"
+          ],
+          [
+            24,
+            "B"
+          ],
+          [
+            29,
+            "GA"
+          ],
+          [
+            35,
+            "ST"
+          ],
+          [
+            40,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "bb9",
+        "name": "BB9",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            16,
+            "D"
+          ],
+          [
+            23,
+            "B"
+          ],
+          [
+            28,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "r7",
+        "name": "R7",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            16,
+            "G"
+          ],
+          [
+            19,
+            "DI"
+          ],
+          [
+            25,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "mechadroid",
+        "name": "Mecha-Droid",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            17,
+            "D"
+          ],
+          [
+            20,
+            "R"
+          ]
+        ]
+      },
+      {
+        "key": "ecg",
+        "name": "ECG",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            24,
+            "D"
+          ],
+          [
+            26,
+            "G"
+          ],
+          [
+            32,
+            "GA"
+          ],
+          [
+            35,
+            "ST"
+          ],
+          [
+            40,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "ig",
+        "name": "IG",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            25,
+            "D"
+          ],
+          [
+            29,
+            "B"
+          ],
+          [
+            34,
+            "GA"
+          ]
+        ]
+      },
+      {
+        "key": "loadlifter",
+        "name": "Loadlifter",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            25,
+            "D"
+          ]
+        ]
+      },
+      {
+        "key": "motrak",
+        "name": "MO-Trak",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "G"
+          ]
+        ]
+      },
+      {
+        "key": "drftr",
+        "name": "DRFT-R",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            26,
+            "DI"
+          ],
+          [
+            30,
+            "GA"
+          ],
+          [
+            40,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "cyclens",
+        "name": "Cyclens",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "R"
+          ],
+          [
+            32,
+            "B"
+          ]
+        ]
+      },
+      {
+        "key": "snowmouse",
+        "name": "Snow Mouse",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "R"
+          ],
+          [
+            31,
+            "B"
+          ],
+          [
+            38,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "tritek",
+        "name": "Tri-TEK",
+        "rarity": "Mythic",
+        "requirements": [
+          [
+            27,
+            "B"
+          ],
+          [
+            33,
+            "GA"
+          ],
+          [
+            39,
+            "K"
+          ]
+        ]
+      },
+      {
+        "key": "cyclograv",
+        "name": "Cyclo-GRAV",
+        "rarity": "Legendary",
+        "requirements": [
+          [
+            33,
+            "GA"
+          ],
+          [
+            39,
+            "K"
+          ]
+        ]
       }
     ]
   }
-}</script>
+}
+</script>
 <script>
 const DB = JSON.parse(document.getElementById('droid-db').textContent);
-const VARIANT_ORDER = DB.varianceOrder || ['Default','Gold','Diamond','Rainbow','Beskar','Galactic'];
+const VARIANT_ORDER = DB.varianceOrder || ['Default','Gold','Diamond','Rainbow','Beskar','Galactic','Stellar','Kyber'];
 const VARIANT_RANK = Object.fromEntries(VARIANT_ORDER.map((v, i) => [v, i]));
-const VARIANT_CODE = {Default:'D', Gold:'G', Diamond:'DI', Rainbow:'R', Beskar:'B', Galactic:'GA', Stellar:'ST'};
+const VARIANT_CODE = {Default:'D', Gold:'G', Diamond:'DI', Rainbow:'R', Beskar:'B', Galactic:'GA', Stellar:'ST', Kyber:'K'};
 const CODE_TO_VARIANT = Object.fromEntries(Object.entries(VARIANT_CODE).map(([k, v]) => [v, k]));
 
 function validateDB() {
@@ -4373,12 +5539,12 @@ function saveState() { mergeAndSaveActiveProfile(); }
 
 function profileName(id) { return store.profiles[id]?.name || 'Profile'; }
 function updateProfileHeader() {
-  if (els.profileMeta) els.profileMeta.textContent = `Current tables through Rebirth 35 · Profile: ${profileName(activeProfileId)}`;
+  if (els.profileMeta) els.profileMeta.textContent = `Current tables through Rebirth 40 · Profile: ${profileName(activeProfileId)}`;
 }
 function applyUiFromState() {
   els.cycleSel.value = state.uiCycle || '1';
   els.currentSel.value = state.uiCurrent || '0';
-  els.targetSel.value = state.uiTarget || '35';
+  els.targetSel.value = state.uiTarget || '40';
   els.sortSel.value = state.uiSort || 'first';
   els.searchBox.value = state.uiSearch || '';
   els.modeSel.value = state.uiMode || 'planning';
@@ -4556,8 +5722,8 @@ function buildSelect(el, max) {
   for (let i = 0; i <= max; i++) options.push(`<option value="${i}">${i}</option>`);
   el.innerHTML = options.join('');
 }
-buildSelect(els.currentSel, 35);
-buildSelect(els.targetSel, 35);
+buildSelect(els.currentSel, 40);
+buildSelect(els.targetSel, 40);
 migrateLegacyOwnedVariants();
 
 function canonicalNeed(row, target) {
@@ -4867,7 +6033,7 @@ els.resetAllBtn.addEventListener('click', () => {
   clearAllProgress();
   state.uiCycle = '1';
   state.uiCurrent = '0';
-  state.uiTarget = '35';
+  state.uiTarget = '40';
   state.uiSort = 'first';
   state.uiSearch = '';
   state.uiMode = 'planning';
@@ -4885,7 +6051,7 @@ applyUiFromState();
 // restore defaults / current browser state
 els.cycleSel.value = state.uiCycle || '1';
 els.currentSel.value = state.uiCurrent || '0';
-els.targetSel.value = state.uiTarget || '35';
+els.targetSel.value = state.uiTarget || '40';
 els.sortSel.value = state.uiSort || 'first';
 els.searchBox.value = state.uiSearch || '';
 els.modeSel.value = state.uiMode || 'planning';
