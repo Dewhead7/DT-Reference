@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Droid Tycoon Reference v6.0</title>
+<title>Droid Tycoon Reference v6.0.1</title>
 <style>
   :root {
     --panel-width: 460px;
@@ -437,7 +437,7 @@
 <div class="shell" id="shell">
 <div class="topbar">
 <div class="title">
-<h1>Droid Tycoon Reference v6.0</h1>
+<h1>Droid Tycoon Reference v6.0.1</h1>
 <div class="meta" id="profileMeta">Current tables through Rebirth 40</div>
 </div>
 <div class="controls">
@@ -6013,10 +6013,13 @@ document.addEventListener('click', (e) => {
 });
 
 
-for (const el of [els.cycleSel, els.currentSel, els.targetSel, els.sortSel, els.searchBox, els.modeSel]) {
+for (const el of [els.cycleSel, els.currentSel, els.targetSel, els.sortSel, els.modeSel]) {
   el.addEventListener('input', render);
   el.addEventListener('change', render);
 }
+// Search results already redraw on every keystroke. Redrawing again when the
+// field loses focus can replace an ownership pill midway through its click.
+els.searchBox.addEventListener('input', render);
 els.profileSel.addEventListener('change', () => switchProfile(els.profileSel.value));
 els.newProfileBtn.addEventListener('click', createBlankProfile);
 els.renameProfileBtn.addEventListener('click', renameActiveProfile);
