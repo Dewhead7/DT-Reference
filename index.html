@@ -6072,11 +6072,12 @@ for (const el of [els.cycleSel, els.currentSel, els.targetSel, els.sortSel, els.
 
 function focusSearchOnActivation() {
   if (document.visibilityState === 'hidden') return;
-  window.setTimeout(() => {
-    if (!els.searchBox) return;
-    els.searchBox.focus({preventScroll:true});
-    els.searchBox.select();
-  }, 0);
+  if (!els.searchBox) return;
+  // Focus synchronously while the window is activating. Deferring this work
+  // can move focus away from an ownership pill between pointer events, making
+  // the user's first click appear to be ignored.
+  els.searchBox.focus({preventScroll:true});
+  els.searchBox.select();
 }
 window.addEventListener('focus', focusSearchOnActivation);
 document.addEventListener('visibilitychange', () => {
